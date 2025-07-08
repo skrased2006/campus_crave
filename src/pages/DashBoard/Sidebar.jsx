@@ -1,4 +1,4 @@
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
 import {
   FaTachometerAlt,
   FaUsers,
@@ -23,12 +23,14 @@ const Sidebar = () => {
       {/* Logo Section */}
       <div>
         <div className="flex items-center gap-2 p-4 border-b">
-          <img
-            src="https://i.ibb.co/wZX5dygz/images.png"
-            className="w-10 h-10"
-            alt="Logo"
-          />
-          <span className="text-xl font-bold text-primary">HostelEase</span>
+          <Link to='/' className="flex gap-2 items-center">
+            <img
+              src="https://i.ibb.co/wZX5dygz/images.png"
+              className="w-10 h-10"
+              alt="Logo"
+            />
+            <span className="text-xl font-bold text-primary">Campas Crave</span>
+          </Link>
         </div>
 
         {/* Navigation */}
@@ -43,7 +45,7 @@ const Sidebar = () => {
           </NavLink>
 
           <NavLink
-            to="/dashboard/admin/manage-users"
+            to="/dashboard/manegUsers"
             className={({ isActive }) =>
               `${navLinkClass} ${isActive ? activeClass : inactiveClass}`
             }

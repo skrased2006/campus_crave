@@ -10,6 +10,7 @@ import DashBoardLayout from "../layout/DashBoardLayout";
 import AddMeal from "../pages/MealSection/AddMeal";
 import AllMeals from "../pages/MealSection/AllMeals";
 import MealDetails from "../pages/MealSection/MealDetails";
+import ManageUsers from "../pages/DashBoard/ManageUsers";
 
 
 
@@ -58,6 +59,10 @@ export const router = createBrowserRouter([
         path: 'allMeals',
         element: <AllMeals></AllMeals>
       },
+      {
+        path: 'manegUsers',
+        element: <ManageUsers></ManageUsers>
+      }
 
     ]
   },
