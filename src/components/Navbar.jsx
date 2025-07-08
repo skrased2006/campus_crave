@@ -108,7 +108,7 @@ const Navbar = () => {
                   </div>
                   <ul className="menu p-2">
                     <li>
-                      <Link to="/dashboard/my-profile">Dashboard</Link>
+                      <Link to="/dashboard">Dashboard</Link>
                     </li>
                     <li>
                       <button

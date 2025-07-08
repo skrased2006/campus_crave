@@ -56,7 +56,7 @@ const MembershipSection = () => {
 
   return (
     <section className="py-20 px-4 bg-base-100">
-      <div className="max-w-6xl mx-auto text-center">
+      <div className="max-w-7xl mx-auto text-center">
         <h2 className="text-4xl font-bold text-primary mb-3">Upgrade to Premium</h2>
         <p className="text-gray-500 mb-12">
           Choose a package that best fits your meal lifestyle

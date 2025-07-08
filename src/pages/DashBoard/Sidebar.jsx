@@ -1,0 +1,125 @@
+import { NavLink } from "react-router";
+import {
+  FaTachometerAlt,
+  FaUsers,
+  FaUtensils,
+  FaSignOutAlt,
+  FaPlusCircle,
+} from "react-icons/fa";
+import { MdOutlineRateReview, MdFastfood } from "react-icons/md";
+import { RiUserSettingsLine } from "react-icons/ri";
+import useAuth from "../../hooks/useAuth";
+
+const Sidebar = () => {
+  const { logout } = useAuth();
+
+  const navLinkClass =
+    "flex items-center gap-3 px-4 py-2 rounded-md font-medium transition-colors duration-200";
+  const activeClass = "bg-primary text-white";
+  const inactiveClass = "text-gray-700 hover:bg-gray-100";
+
+  return (
+    <div className="w-64 h-screen bg-white shadow-lg flex flex-col justify-between sticky top-0">
+      {/* Logo Section */}
+      <div>
+        <div className="flex items-center gap-2 p-4 border-b">
+          <img
+            src="https://i.ibb.co/wZX5dygz/images.png"
+            className="w-10 h-10"
+            alt="Logo"
+          />
+          <span className="text-xl font-bold text-primary">HostelEase</span>
+        </div>
+
+        {/* Navigation */}
+        <nav className="px-4 py-6 space-y-2">
+          <NavLink
+            to="/dashboard/admin/profile"
+            className={({ isActive }) =>
+              `${navLinkClass} ${isActive ? activeClass : inactiveClass}`
+            }
+          >
+            <FaTachometerAlt /> Dashboard
+          </NavLink>
+
+          <NavLink
+            to="/dashboard/admin/manage-users"
+            className={({ isActive }) =>
+              `${navLinkClass} ${isActive ? activeClass : inactiveClass}`
+            }
+          >
+            <FaUsers /> Manage Users
+          </NavLink>
+
+          <NavLink
+            to="/dashboard/addMeal"
+            className={({ isActive }) =>
+              `${navLinkClass} ${isActive ? activeClass : inactiveClass}`
+            }
+          >
+            <FaPlusCircle /> Add Meal
+          </NavLink>
+
+          <NavLink
+            to="/dashboard/allMeals"
+            className={({ isActive }) =>
+              `${navLinkClass} ${isActive ? activeClass : inactiveClass}`
+            }
+          >
+            <FaUtensils /> All Meals
+          </NavLink>
+
+          <NavLink
+            to="/dashboard/admin/serve-meals"
+            className={({ isActive }) =>
+              `${navLinkClass} ${isActive ? activeClass : inactiveClass}`
+            }
+          >
+            <MdFastfood /> Serve Meals
+          </NavLink>
+
+          <NavLink
+            to="/dashboard/admin/all-reviews"
+            className={({ isActive }) =>
+              `${navLinkClass} ${isActive ? activeClass : inactiveClass}`
+            }
+          >
+            <MdOutlineRateReview /> All Reviews
+          </NavLink>
+
+          <NavLink
+            to="/dashboard/admin/upcoming-meals"
+            className={({ isActive }) =>
+              `${navLinkClass} ${isActive ? activeClass : inactiveClass}`
+            }
+          >
+            <MdFastfood /> Upcoming Meals
+          </NavLink>
+        </nav>
+      </div>
+
+      {/* Bottom Profile Section */}
+      <div className="p-4 border-t">
+        <p className="text-xs text-gray-400 mb-2">My Account</p>
+
+        <NavLink
+          to="/dashboard/admin/profile"
+          className={({ isActive }) =>
+            `${navLinkClass} ${isActive ? activeClass : "text-gray-600 hover:bg-gray-100"}`
+          }
+        >
+          <RiUserSettingsLine /> Profile
+        </NavLink>
+
+        <button
+          onClick={logout}
+          className="flex items-center gap-3 text-red-500 hover:text-red-600 px-4 py-2 rounded-md transition"
+        >
+          <FaSignOutAlt /> Sign Out
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default Sidebar;
