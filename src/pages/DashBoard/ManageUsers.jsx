@@ -3,6 +3,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { FaSearch, FaUserShield, FaUserTimes } from "react-icons/fa";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 const ManageUsers = () => {
   const axiosSecure = useAxiosSecure();
@@ -44,6 +45,13 @@ const ManageUsers = () => {
       Swal.fire("Error", "Failed to update user role", "error");
     }
   };
+
+  if (isLoading) {
+    return <LoadingSpinner></LoadingSpinner>
+  }
+
+
+
 
   return (
     <div className="p-6">

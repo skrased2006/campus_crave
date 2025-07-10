@@ -50,9 +50,16 @@ const plans = [
 const MembershipSection = () => {
   const navigate = useNavigate();
 
-  const handleCheckout = (packageName) => {
-    navigate(`/checkout/${packageName.toLowerCase()}`);
+  const handleCheckout = (plan) => {
+    navigate(`/checkout/${plan.name.toLowerCase()}`, {
+      state: {
+        price: plan.price,
+        badge: plan.name,
+        title: `${plan.name} Package`,
+      },
+    });
   };
+
 
   return (
     <section className="py-20 px-4 bg-base-100">
@@ -84,11 +91,12 @@ const MembershipSection = () => {
               </ul>
 
               <button
-                onClick={() => handleCheckout(plan.name)}
+                onClick={() => handleCheckout(plan)}
                 className="btn btn-primary w-full capitalize tracking-wide"
               >
                 Choose {plan.name}
               </button>
+
             </motion.div>
           ))}
         </div>

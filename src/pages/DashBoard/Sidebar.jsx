@@ -5,13 +5,20 @@ import {
   FaUtensils,
   FaSignOutAlt,
   FaPlusCircle,
+  FaUserCircle,
+  FaComments,
+  FaCreditCard
 } from "react-icons/fa";
+
+
 import { MdOutlineRateReview, MdFastfood } from "react-icons/md";
 import { RiUserSettingsLine } from "react-icons/ri";
 import useAuth from "../../hooks/useAuth";
+import useUserRole from "../../hooks/useUserRole";
 
 const Sidebar = () => {
   const { logout } = useAuth();
+  const { role, roleLoading } = useUserRole();
 
   const navLinkClass =
     "flex items-center gap-3 px-4 py-2 rounded-md font-medium transition-colors duration-200";
@@ -35,68 +42,107 @@ const Sidebar = () => {
 
         {/* Navigation */}
         <nav className="px-4 py-6 space-y-2">
-          <NavLink
-            to="/dashboard/admin/profile"
-            className={({ isActive }) =>
-              `${navLinkClass} ${isActive ? activeClass : inactiveClass}`
-            }
-          >
-            <FaTachometerAlt /> Dashboard
-          </NavLink>
 
-          <NavLink
-            to="/dashboard/manegUsers"
-            className={({ isActive }) =>
-              `${navLinkClass} ${isActive ? activeClass : inactiveClass}`
-            }
-          >
-            <FaUsers /> Manage Users
-          </NavLink>
+          {
+            !roleLoading && role === 'user' &&
+            <>
 
-          <NavLink
-            to="/dashboard/addMeal"
-            className={({ isActive }) =>
-              `${navLinkClass} ${isActive ? activeClass : inactiveClass}`
-            }
-          >
-            <FaPlusCircle /> Add Meal
-          </NavLink>
+              <NavLink
+                to="/dashboard/requested-meals"
+                className={({ isActive }) =>
+                  `${navLinkClass} ${isActive ? activeClass : inactiveClass}`
+                }
+              >
+                <FaUtensils /> Requested Meals
+              </NavLink>
 
-          <NavLink
-            to="/dashboard/allMeals"
-            className={({ isActive }) =>
-              `${navLinkClass} ${isActive ? activeClass : inactiveClass}`
-            }
-          >
-            <FaUtensils /> All Meals
-          </NavLink>
+              <NavLink
+                to="/dashboard/my-reviews"
+                className={({ isActive }) =>
+                  `${navLinkClass} ${isActive ? activeClass : inactiveClass}`
+                }
+              >
+                <FaComments /> My Reviews
+              </NavLink>
 
-          <NavLink
-            to="/dashboard/admin/serve-meals"
-            className={({ isActive }) =>
-              `${navLinkClass} ${isActive ? activeClass : inactiveClass}`
-            }
-          >
-            <MdFastfood /> Serve Meals
-          </NavLink>
+              <NavLink
+                to="/dashboard/payment-history"
+                className={({ isActive }) =>
+                  `${navLinkClass} ${isActive ? activeClass : inactiveClass}`
+                }
+              >
+                <FaCreditCard /> Payment History
+              </NavLink>
+            </>
+          }
 
-          <NavLink
-            to="/dashboard/admin/all-reviews"
-            className={({ isActive }) =>
-              `${navLinkClass} ${isActive ? activeClass : inactiveClass}`
-            }
-          >
-            <MdOutlineRateReview /> All Reviews
-          </NavLink>
 
-          <NavLink
-            to="/dashboard/admin/upcoming-meals"
-            className={({ isActive }) =>
-              `${navLinkClass} ${isActive ? activeClass : inactiveClass}`
-            }
-          >
-            <MdFastfood /> Upcoming Meals
-          </NavLink>
+
+
+          {
+            !roleLoading && role === 'admin' &&
+            <>
+              <NavLink
+                to="/dashboard/manegUsers"
+                className={({ isActive }) =>
+                  `${navLinkClass} ${isActive ? activeClass : inactiveClass}`
+                }
+              >
+                <FaUsers /> Manage Users
+              </NavLink>
+
+              <NavLink
+                to="/dashboard/addMeal"
+                className={({ isActive }) =>
+                  `${navLinkClass} ${isActive ? activeClass : inactiveClass}`
+                }
+              >
+                <FaPlusCircle /> Add Meal
+              </NavLink>
+
+
+              <NavLink
+                to="/dashboard/allMeals"
+                className={({ isActive }) =>
+                  `${navLinkClass} ${isActive ? activeClass : inactiveClass}`
+                }
+              >
+                <FaUtensils /> All Meals
+              </NavLink>
+
+              <NavLink
+                to="/dashboard/admin/serve-meals"
+                className={({ isActive }) =>
+                  `${navLinkClass} ${isActive ? activeClass : inactiveClass}`
+                }
+              >
+                <MdFastfood /> Serve Meals
+              </NavLink>
+
+              <NavLink
+                to="/dashboard/admin/all-reviews"
+                className={({ isActive }) =>
+                  `${navLinkClass} ${isActive ? activeClass : inactiveClass}`
+                }
+              >
+                <MdOutlineRateReview /> All Reviews
+              </NavLink>
+
+              <NavLink
+                to="/dashboard/admin/upcoming-meals"
+                className={({ isActive }) =>
+                  `${navLinkClass} ${isActive ? activeClass : inactiveClass}`
+                }
+              >
+                <MdFastfood /> Upcoming Meals
+              </NavLink>
+
+
+
+            </>
+          }
+
+
         </nav>
       </div>
 
@@ -104,14 +150,34 @@ const Sidebar = () => {
       <div className="p-4 border-t">
         <p className="text-xs text-gray-400 mb-2">My Account</p>
 
-        <NavLink
-          to="/dashboard/admin/profile"
-          className={({ isActive }) =>
-            `${navLinkClass} ${isActive ? activeClass : "text-gray-600 hover:bg-gray-100"}`
-          }
-        >
-          <RiUserSettingsLine /> Profile
-        </NavLink>
+        {
+          !roleLoading && role === 'user' &&
+          <>
+            <NavLink
+              to="/dashboard/myProfile"
+              className={({ isActive }) =>
+                `${navLinkClass} ${isActive ? activeClass : "text-gray-600 hover:bg-gray-100"}`
+              }
+            >
+              <RiUserSettingsLine /> Profile
+            </NavLink>
+          </>
+        }
+        {
+          !roleLoading && role === 'admin' &&
+          <>
+            <NavLink
+              to="/dashboard/adminProfile"
+              className={({ isActive }) =>
+                `${navLinkClass} ${isActive ? activeClass : "text-gray-600 hover:bg-gray-100"}`
+              }
+            >
+              <RiUserSettingsLine /> Profile
+            </NavLink>
+          </>
+        }
+
+
 
         <button
           onClick={logout}

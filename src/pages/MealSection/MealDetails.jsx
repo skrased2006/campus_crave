@@ -1,4 +1,4 @@
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
@@ -13,7 +13,7 @@ const MealDetails = () => {
   const [meal, setMeal] = useState(null);
   const [liked, setLiked] = useState(false);
   const [reviews, setReviews] = useState([]);
-
+  const navigate = useNavigate();
   // Fetch meal data
   useEffect(() => {
     axiosSecure.get(`/meals/${id}`).then((res) => {
@@ -30,32 +30,51 @@ const MealDetails = () => {
 
   // Like handler
   const handleLike = async () => {
-    if (!user) return Swal.fire("Please login to like the meal.");
+    if (!user) return navigate("/login");
     if (liked) return;
 
-    const res = await axiosSecure.patch(`/meals/like/${id}`);
+    const res = await axiosSecure.patch(`/meals/like/${id}`, {
+      email: user.email, // ✅ এটাই মূল জিনিস
+    });
+
     if (res.data.modifiedCount > 0) {
       setMeal((prev) => ({ ...prev, likes: prev.likes + 1 }));
       setLiked(true);
     }
   };
 
+
   // Request Meal
+  // ✅ Meal Request Function
   const handleRequest = async () => {
-    if (!user || user?.badge === "Bronze") {
+    if (!user) {
+      return navigate("/login");
+    }
+
+    // check if user is premium
+    if (user?.badge === "Bronze") {
       return Swal.fire("Only premium users can request meals.");
     }
 
-    const res = await axiosSecure.post("/requests", {
-      mealId: id,
-      userEmail: user.email,
-      status: "pending",
-    });
+    try {
+      const res = await axiosSecure.post("/meal-requests", {
+        mealId: id,
+        userEmail: user.email,
+        userName: user.displayName,
+      });
 
-    if (res.data.insertedId) {
-      Swal.fire("Request Sent", "Your meal request is pending approval.", "success");
+      if (res.data.insertedId) {
+        Swal.fire("Request Sent", "Your meal request is pending approval.", "success");
+      }
+    } catch (err) {
+      if (err.response?.data?.message) {
+        Swal.fire("Request Failed", err.response.data.message, "error");
+      } else {
+        Swal.fire("Error", "Something went wrong!", "error");
+      }
     }
   };
+
 
   // Add Review
   const handleReviewSubmit = async (e) => {

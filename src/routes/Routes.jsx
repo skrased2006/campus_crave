@@ -11,6 +11,13 @@ import AddMeal from "../pages/MealSection/AddMeal";
 import AllMeals from "../pages/MealSection/AllMeals";
 import MealDetails from "../pages/MealSection/MealDetails";
 import ManageUsers from "../pages/DashBoard/ManageUsers";
+import AdminProfile from "../pages/DashBoard/AdminProfile";
+import PrivateRoute from "./PrivateRoute";
+import CheckoutPage from "../pages/PaymentSection/CheckoutPage";
+import MyProfile from "../pages/DashBoard/MyProfile";
+import PaymentHistory from "../pages/PaymentSection/PaymentHistory";
+import MealsPage from "../pages/MealSection/MealsPage";
+import MyReviews from "../pages/DashBoard/MyReviews";
 
 
 
@@ -27,6 +34,13 @@ export const router = createBrowserRouter([
       {
         path: 'meal/:id',
         element: <MealDetails />
+      },
+
+      {
+
+        path: 'allmeal',
+        element: <MealsPage></MealsPage>
+
       }
 
 
@@ -43,6 +57,11 @@ export const router = createBrowserRouter([
   {
     path: 'register',
     Component: Register
+  },
+  {
+    path: "/checkout/:packageId",
+    element: <PrivateRoute><CheckoutPage></CheckoutPage></PrivateRoute>
+
   },
 
 
@@ -62,7 +81,24 @@ export const router = createBrowserRouter([
       {
         path: 'manegUsers',
         element: <ManageUsers></ManageUsers>
+      },
+      {
+        path: 'adminProfile',
+        element: <AdminProfile></AdminProfile>
+      },
+      {
+        path: 'myProfile',
+        element: <MyProfile></MyProfile>
+      },
+      {
+        path: "payment-history",
+        element: <PrivateRoute><PaymentHistory /></PrivateRoute>
+      },
+      {
+        path: 'my-reviews',
+        element: <MyReviews></MyReviews>
       }
+
 
     ]
   },
