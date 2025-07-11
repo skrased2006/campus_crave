@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router";
-import { motion } from "framer-motion";
 import { FcGoogle } from "react-icons/fc";
+import { Player } from "@lottiefiles/react-lottie-player";
 import useAuth from "../../hooks/useAuth";
+
+import foodAnim from "../../assets/animations/Login Leady.json"; // তোমার JSON animation path
+import toast from "react-hot-toast";
 
 const Login = () => {
   const { signIn, signInwithGoogle } = useAuth();
@@ -18,6 +21,8 @@ const Login = () => {
 
     try {
       await signIn(email, password);
+      toast.success("🎉 Logged in successfully!");
+
       navigate(from, { replace: true });
     } catch (err) {
       setError("Invalid email or password");
@@ -34,35 +39,25 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <div className="w-full max-w-6xl bg-white rounded-xl shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
-        {/* Left Side: Logo + About */}
-        <motion.div
-          className="bg-primary text-white flex flex-col items-center justify-center p-10"
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <img
-            src="https://i.ibb.co/wZX5dygz/images.png"
-            alt="Campus Crave"
-            className="w-[480px] h-[200px] mb-4 object-cover"
-          />
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-primary/10 to-blue-100 px-4">
+      <div className="w-full max-w-6xl bg-white rounded-2xl shadow-2xl grid grid-cols-1 md:grid-cols-2 overflow-hidden">
 
-          <h1 className="text-3xl font-bold mb-2">Campus Crave</h1>
-          <p className="text-center text-sm max-w-xs leading-relaxed">
-            Discover and review your daily campus meals. Powered by students,
-            for students. Your feedback matters 🍽️
+        {/* Left Side: Lottie Animation */}
+        <div className="flex flex-col items-center justify-center bg-primary p-6 text-white">
+          <Player
+            autoplay
+            loop
+            src={foodAnim}
+            style={{ height: '300px', width: '300px' }}
+          />
+          <h2 className="text-3xl font-bold mt-4">Campus Crave</h2>
+          <p className="text-sm mt-2 max-w-xs text-center">
+            Discover and review campus meals with student-powered feedback 🍽️
           </p>
-        </motion.div>
+        </div>
 
         {/* Right Side: Login Form */}
-        <motion.div
-          className="p-10"
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6 }}
-        >
+        <div className="p-10">
           <h2 className="text-3xl font-bold text-center text-primary mb-6">
             Login to Your Account
           </h2>
@@ -104,11 +99,11 @@ const Login = () => {
 
           <p className="mt-4 text-center text-sm">
             Don’t have an account?{" "}
-            <a href="/register" className="text-primary font-semibold">
+            <a href="/register" className="text-primary font-semibold hover:underline">
               Join Now
             </a>
           </p>
-        </motion.div>
+        </div>
       </div>
     </div>
   );

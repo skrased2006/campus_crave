@@ -18,6 +18,7 @@ import MyProfile from "../pages/DashBoard/MyProfile";
 import PaymentHistory from "../pages/PaymentSection/PaymentHistory";
 import MealsPage from "../pages/MealSection/MealsPage";
 import MyReviews from "../pages/DashBoard/MyReviews";
+import RequestedMeals from "../pages/DashBoard/RequestedMeals";
 
 
 
@@ -97,6 +98,10 @@ export const router = createBrowserRouter([
       {
         path: 'my-reviews',
         element: <MyReviews></MyReviews>
+      },
+      {
+        path: 'requested-meals',
+        element: <RequestedMeals></RequestedMeals>
       }
 
 

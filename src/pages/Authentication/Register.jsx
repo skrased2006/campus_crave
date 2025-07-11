@@ -3,11 +3,14 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useLocation } from "react-router";
 import { motion } from "framer-motion";
 import { FcGoogle } from "react-icons/fc";
+import foodAnim from "../../assets/animations/Login Leady.json";
 
 import axios from "axios";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
+import { Player } from "@lottiefiles/react-lottie-player";
+import toast from "react-hot-toast";
 
 
 const Register = () => {
@@ -96,22 +99,16 @@ const Register = () => {
 
       await userUpadateProfile(userProfile);
 
-      Swal.fire({
-        icon: "success",
-        title: "Registration Successful!",
-        text: "Welcome to our platform.",
-      });
+      toast.success("🎉 Account created successfully!");
+
       console.log(userProfile)
 
       navigate(from, { replace: true });
     } catch (err) {
       console.error("Registration error:", err);
       setError(err.message);
-      Swal.fire({
-        icon: "error",
-        title: "Registration Failed",
-        text: err.message,
-      });
+      toast.error("❌ Registration failed. Please try again.");
+
     }
   };
 
@@ -129,18 +126,18 @@ const Register = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <div className="w-full max-w-6xl bg-white rounded-xl shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
         {/* Left side image */}
-        <motion.div
-          className="bg-primary text-white flex flex-col items-center justify-center p-10"
-          initial={{ opacity: 0, x: -60 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <img
-            src="https://images.unsplash.com/photo-1606788075761-8e3d9e5c22b3?auto=format&fit=crop&w=900&q=80"
-            alt="Campus Crave"
-            className="w-full h-full object-cover"
+        <div className="flex flex-col items-center justify-center bg-primary p-6 text-white">
+          <Player
+            autoplay
+            loop
+            src={foodAnim}
+            style={{ height: '300px', width: '300px' }}
           />
-        </motion.div>
+          <h2 className="text-3xl font-bold mt-4">Campus Crave</h2>
+          <p className="text-sm mt-2 max-w-xs text-center">
+            Discover and review campus meals with student-powered feedback 🍽️
+          </p>
+        </div>
 
         {/* Right side form */}
         <motion.div

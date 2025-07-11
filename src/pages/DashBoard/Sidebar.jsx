@@ -17,8 +17,13 @@ import useAuth from "../../hooks/useAuth";
 import useUserRole from "../../hooks/useUserRole";
 
 const Sidebar = () => {
-  const { logout } = useAuth();
+  const { logOut } = useAuth();
   const { role, roleLoading } = useUserRole();
+
+  const handleLogout = () => {
+    logOut()
+  }
+
 
   const navLinkClass =
     "flex items-center gap-3 px-4 py-2 rounded-md font-medium transition-colors duration-200";
@@ -180,7 +185,7 @@ const Sidebar = () => {
 
 
         <button
-          onClick={logout}
+          onClick={handleLogout}
           className="flex items-center gap-3 text-red-500 hover:text-red-600 px-4 py-2 rounded-md transition"
         >
           <FaSignOutAlt /> Sign Out

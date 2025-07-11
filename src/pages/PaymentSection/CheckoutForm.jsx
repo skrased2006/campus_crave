@@ -3,6 +3,7 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { useNavigate } from "react-router";
 
 const CheckoutForm = ({ packageData }) => {
   const { user } = useAuth();
@@ -10,6 +11,7 @@ const CheckoutForm = ({ packageData }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [processing, setProcessing] = useState(false);
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,6 +64,8 @@ const CheckoutForm = ({ packageData }) => {
           text: `You have been upgraded to ${packageData.badge} badge.`,
         });
 
+        navigate('/')
+
       }
     } catch (err) {
       console.error(err);
@@ -85,4 +89,5 @@ const CheckoutForm = ({ packageData }) => {
   );
 };
 
-export default CheckoutForm;
+export default CheckoutForm
+

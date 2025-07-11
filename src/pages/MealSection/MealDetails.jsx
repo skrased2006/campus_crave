@@ -152,30 +152,34 @@ const MealDetails = () => {
         )}
 
         <div className="space-y-4">
-          {reviews.length > 0 ? (
-            reviews.map((r, idx) => (
-              <div
-                key={idx}
-                className="bg-base-100 shadow p-4 rounded-md border border-gray-200"
-              >
-                <div className="flex items-center gap-3 mb-2">
-                  <img
-                    src={r.photo || "/default-avatar.png"}
-                    alt={r.name}
-                    className="w-8 h-8 rounded-full"
-                  />
-                  <p className="font-semibold">{r.name}</p>
-                  <span className="text-gray-400 text-sm">
-                    {new Date(r.time).toLocaleDateString()}
-                  </span>
+          {reviews && reviews.length > 0 ? (
+            reviews.map((r, idx) => {
+              if (!r) return null;
+              return (
+                <div
+                  key={idx}
+                  className="bg-base-100 shadow p-4 rounded-md border border-gray-200"
+                >
+                  <div className="flex items-center gap-3 mb-2">
+                    <img
+                      src={r.photo || "/default-avatar.png"}
+                      alt={r.name || "User"}
+                      className="w-8 h-8 rounded-full"
+                    />
+                    <p className="font-semibold">{r.name || "Anonymous"}</p>
+                    <span className="text-gray-400 text-sm">
+                      {r.time ? new Date(r.time).toLocaleDateString() : "Unknown date"}
+                    </span>
+                  </div>
+                  <p className="text-gray-700">{r.review || ""}</p>
                 </div>
-                <p className="text-gray-700">{r.review}</p>
-              </div>
-            ))
+              );
+            })
           ) : (
             <p className="text-gray-500">No reviews yet.</p>
           )}
         </div>
+
       </div>
     </div>
   );

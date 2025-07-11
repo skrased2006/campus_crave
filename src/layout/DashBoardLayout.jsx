@@ -8,7 +8,7 @@ const DashBoardLayout = () => {
     <div className="flex h-screen overflow-hidden">
       <Sidebar />
       <div className="flex flex-col flex-1">
-        <Topbar />
+
         <main className="p-4 overflow-y-auto bg-gray-50 flex-1">
           <Outlet />
         </main>
