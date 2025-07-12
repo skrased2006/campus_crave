@@ -24,6 +24,7 @@ const MealDetails = () => {
   // Fetch reviews
   useEffect(() => {
     axiosSecure.get(`/reviews/${id}`).then((res) => {
+      console.log(res.data)
       setReviews(res.data);
     });
   }, [id, axiosSecure]);
@@ -84,12 +85,15 @@ const MealDetails = () => {
 
     const res = await axiosSecure.post("/reviews", {
       mealId: id,
+      mealTitle: meal.title, // ✅ নতুন লাইন
       email: user.email,
       name: user.displayName,
       photo: user.photoURL,
       review: text,
       time: new Date(),
+      like: meal.likes
     });
+
 
     if (res.data.insertedId) {
       Swal.fire("Review added!");

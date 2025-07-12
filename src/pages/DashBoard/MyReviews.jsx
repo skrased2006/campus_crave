@@ -1,28 +1,58 @@
 import { useQuery } from '@tanstack/react-query';
-import { Link } from 'react-router';  // তোমার কোডে react-router ছিল, এটা react-router-dom হওয়া উচিত
+import { Link } from 'react-router'; // ✅ ঠিক import
+import Swal from 'sweetalert2';
+import { useState } from 'react';
 import useAuth from '../../hooks/useAuth';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 
 const MyReviews = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
+  const [editingReviewId, setEditingReviewId] = useState(null);
+  const [editedText, setEditedText] = useState('');
 
   const { data: reviews = [], refetch } = useQuery({
     queryKey: ['myReviews', user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
       const res = await axiosSecure.get(`/my-reviews/${user.email}`);
-      console.log(res.data);  // ডিবাগিং এর জন্য ভালো
       return res.data;
     },
   });
 
+  // ✅ Delete handler with confirmation
   const handleDelete = async (id) => {
-    const confirmed = window.confirm("Are you sure you want to delete this review?");
-    if (!confirmed) return;
+    const confirmed = await Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+    });
 
-    await axiosSecure.delete(`/reviews/${id}`);
-    refetch();
+    if (!confirmed.isConfirmed) return;
+
+    const res = await axiosSecure.delete(`/reviews/${id}`);
+    if (res.data.deletedCount > 0) {
+      Swal.fire('Deleted!', 'Your review has been deleted.', 'success');
+      refetch();
+    }
+  };
+
+  // ✅ Start editing
+  const handleEdit = (review) => {
+    setEditingReviewId(review._id);
+    setEditedText(review.review);
+  };
+
+  // ✅ Submit edit
+  const handleEditSubmit = async (id) => {
+    const res = await axiosSecure.patch(`/reviews/${id}`, { review: editedText });
+    if (res.data.modifiedCount > 0) {
+      Swal.fire('Updated!', 'Review updated successfully.', 'success');
+      setEditingReviewId(null);
+      refetch();
+    }
   };
 
   if (!user) {
@@ -47,11 +77,42 @@ const MyReviews = () => {
             {reviews.map((review) => (
               <tr key={review._id}>
                 <td>{review.mealTitle}</td>
-                <td>{review.likes || 0}</td> {/* নিশ্চিত হও যে review ডাটাতে likes ফিল্ড আছে */}
-                <td>{review.reviewText}</td> {/* reviewText নাম ঠিকঠাক আছে কিনা চেক করো */}
-                <td className="space-x-2">
-                  <button className="btn btn-sm btn-warning">Edit</button>
-                  <button onClick={() => handleDelete(review._id)} className="btn btn-sm btn-error">Delete</button>
+                <td>{review.like || 0}</td>
+                <td>
+                  {editingReviewId === review._id ? (
+                    <input
+                      value={editedText}
+                      onChange={(e) => setEditedText(e.target.value)}
+                      className="input input-bordered input-sm w-full"
+                    />
+                  ) : (
+                    review.review
+                  )}
+                </td>
+                <td className="space-x-1">
+                  {editingReviewId === review._id ? (
+                    <button
+                      onClick={() => handleEditSubmit(review._id)}
+                      className="btn btn-sm btn-success"
+                    >
+                      Save
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleEdit(review)}
+                      className="btn btn-sm btn-warning"
+                    >
+                      Edit
+                    </button>
+                  )}
+
+                  <button
+                    onClick={() => handleDelete(review._id)}
+                    className="btn btn-sm btn-error"
+                  >
+                    Delete
+                  </button>
+
                   <Link to={`/meals/${review.mealId}`}>
                     <button className="btn btn-sm btn-info">View</button>
                   </Link>

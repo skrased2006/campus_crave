@@ -13,16 +13,13 @@ import {
 
 import { MdOutlineRateReview, MdFastfood } from "react-icons/md";
 import { RiUserSettingsLine } from "react-icons/ri";
-import useAuth from "../../hooks/useAuth";
 import useUserRole from "../../hooks/useUserRole";
 
 const Sidebar = () => {
-  const { logOut } = useAuth();
+
   const { role, roleLoading } = useUserRole();
 
-  const handleLogout = () => {
-    logOut()
-  }
+
 
 
   const navLinkClass =
@@ -125,7 +122,7 @@ const Sidebar = () => {
               </NavLink>
 
               <NavLink
-                to="/dashboard/admin/all-reviews"
+                to="/dashboard/all-reviews"
                 className={({ isActive }) =>
                   `${navLinkClass} ${isActive ? activeClass : inactiveClass}`
                 }
@@ -184,12 +181,7 @@ const Sidebar = () => {
 
 
 
-        <button
-          onClick={handleLogout}
-          className="flex items-center gap-3 text-red-500 hover:text-red-600 px-4 py-2 rounded-md transition"
-        >
-          <FaSignOutAlt /> Sign Out
-        </button>
+
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
+import { useNavigate } from 'react-router';
 
 const MealsPage = () => {
   const [meals, setMeals] = useState([]);
@@ -8,6 +9,7 @@ const MealsPage = () => {
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
   const [totalMeals, setTotalMeals] = useState(0);
+  const navigate = useNavigate();
   const [filters, setFilters] = useState({
     search: '',
     category: 'All',
@@ -24,15 +26,20 @@ const MealsPage = () => {
     });
 
     const newMeals = res.data.meals;
-    setMeals((prev) => [...prev, ...newMeals]);
     setTotalMeals(res.data.total);
-    if (meals.length + newMeals.length >= res.data.total) {
+
+    if (page === 1) {
+      setMeals(newMeals);
+    } else {
+      setMeals((prev) => [...prev, ...newMeals]);
+    }
+
+    if (newMeals.length < limit) {
       setHasMore(false);
     }
   };
 
   useEffect(() => {
-    setMeals([]);
     setPage(1);
     setHasMore(true);
   }, [filters]);
@@ -50,7 +57,7 @@ const MealsPage = () => {
   };
 
   return (
-    <div className="p-4 max-w-6xl mx-auto">
+    <div className="p-4 max-w-10/12 mx-auto">
       {/* 🔍 Search & Filters */}
       <div className="flex gap-4 flex-wrap mb-4">
         <input
@@ -90,7 +97,7 @@ const MealsPage = () => {
         dataLength={meals.length}
         next={handleNext}
         hasMore={hasMore}
-        loader={<p>Loading more meals...</p>}
+        loader={<p className="text-center">🍽️ Loading more meals...</p>}
         endMessage={<p className="text-center">No more meals to load.</p>}
       >
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -100,6 +107,12 @@ const MealsPage = () => {
               <h2 className="text-lg font-semibold mt-2">{meal.title}</h2>
               <p className="text-sm text-gray-600">{meal.category}</p>
               <p className="text-primary font-bold">${meal.price}</p>
+              <button
+                onClick={() => navigate(`/meal/${meal._id}`)}
+                className="btn btn-primary btn-sm w-full"
+              >
+                Details
+              </button>
             </div>
           ))}
         </div>

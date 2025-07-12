@@ -19,6 +19,7 @@ import PaymentHistory from "../pages/PaymentSection/PaymentHistory";
 import MealsPage from "../pages/MealSection/MealsPage";
 import MyReviews from "../pages/DashBoard/MyReviews";
 import RequestedMeals from "../pages/DashBoard/RequestedMeals";
+import AllReviews from "../pages/DashBoard/AllReviews";
 
 
 
@@ -102,6 +103,10 @@ export const router = createBrowserRouter([
       {
         path: 'requested-meals',
         element: <RequestedMeals></RequestedMeals>
+      },
+      {
+        path: 'all-reviews',
+        element: <AllReviews></AllReviews>
       }
 
 
