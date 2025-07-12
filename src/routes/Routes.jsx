@@ -20,6 +20,8 @@ import MealsPage from "../pages/MealSection/MealsPage";
 import MyReviews from "../pages/DashBoard/MyReviews";
 import RequestedMeals from "../pages/DashBoard/RequestedMeals";
 import AllReviews from "../pages/DashBoard/AllReviews";
+import UpcomingMeals from "../pages/DashBoard/UpcomingMeals";
+import UpcomingMealsPage from "../pages/UpcommingMealsPage/UpcomingMealsPage";
 
 
 
@@ -43,6 +45,10 @@ export const router = createBrowserRouter([
         path: 'allmeal',
         element: <MealsPage></MealsPage>
 
+      },
+      {
+        path: 'upcoming-meals',
+        element: <UpcomingMealsPage></UpcomingMealsPage>
       }
 
 
@@ -65,6 +71,7 @@ export const router = createBrowserRouter([
     element: <PrivateRoute><CheckoutPage></CheckoutPage></PrivateRoute>
 
   },
+
 
 
   {
@@ -107,6 +114,10 @@ export const router = createBrowserRouter([
       {
         path: 'all-reviews',
         element: <AllReviews></AllReviews>
+      },
+      {
+        path: 'upcoming-meals',
+        element: <UpcomingMeals></UpcomingMeals>
       }
 
 

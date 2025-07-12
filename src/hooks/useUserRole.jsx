@@ -6,18 +6,17 @@ const useUserRole = () => {
   const { user, loading: authLoading } = useAuth();
   const axiosSecure = useAxiosSecure();
 
-  const {
-    data: userInfo = {}, // পুরো user info আনবে
-    isLoading: roleLoading,
-    refetch,
-  } = useQuery({
+  const { data: userInfo = {}, isLoading: roleLoading, refetch } = useQuery({
     queryKey: ['userRole', user?.email],
     enabled: !authLoading && !!user?.email,
     queryFn: async () => {
+      console.log('Fetching user info for:', user.email);
       const res = await axiosSecure.get(`/users/${user.email}`);
-      return res.data; // e.g. { role: 'user', badge: 'Gold' }
+      console.log('User info response:', res.data);
+      return res.data;
     },
   });
+
 
   return {
     role: userInfo.role || 'user',

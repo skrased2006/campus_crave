@@ -77,7 +77,7 @@ const MyReviews = () => {
             {reviews.map((review) => (
               <tr key={review._id}>
                 <td>{review.mealTitle}</td>
-                <td>{review.like || 0}</td>
+                <td>{review.like}</td>
                 <td>
                   {editingReviewId === review._id ? (
                     <input
@@ -113,7 +113,7 @@ const MyReviews = () => {
                     Delete
                   </button>
 
-                  <Link to={`/meals/${review.mealId}`}>
+                  <Link to={`/meal/${review.mealId}`}>
                     <button className="btn btn-sm btn-info">View</button>
                   </Link>
                 </td>

@@ -4,6 +4,7 @@ import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import { FaThumbsUp } from "react-icons/fa";
+import useUserRole from "../../hooks/useUserRole";
 
 const MealDetails = () => {
   const { id } = useParams();
@@ -14,6 +15,7 @@ const MealDetails = () => {
   const [liked, setLiked] = useState(false);
   const [reviews, setReviews] = useState([]);
   const navigate = useNavigate();
+  const { badge } = useUserRole()
   // Fetch meal data
   useEffect(() => {
     axiosSecure.get(`/meals/${id}`).then((res) => {
@@ -53,9 +55,11 @@ const MealDetails = () => {
     }
 
     // check if user is premium
-    if (user?.badge === "Bronze") {
+    if (badge === "Bronze") {
       return Swal.fire("Only premium users can request meals.");
     }
+
+    console.log('user badge', badge)
 
     try {
       const res = await axiosSecure.post("/meal-requests", {
