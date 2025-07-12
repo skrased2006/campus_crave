@@ -53,8 +53,8 @@ const MealTabs = () => {
             key={cat}
             onClick={() => setActiveTab(cat)}
             className={`px-5 py-2 rounded-full font-semibold transition-colors ${activeTab === cat
-                ? "bg-primary text-white shadow-md"
-                : "bg-gray-200 text-gray-800 hover:bg-primary hover:text-white"
+              ? "bg-primary text-white shadow-md"
+              : "bg-gray-200 text-gray-800 hover:bg-primary hover:text-white"
               }`}
           >
             {cat}

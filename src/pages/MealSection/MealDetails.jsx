@@ -66,6 +66,7 @@ const MealDetails = () => {
         mealId: id,
         userEmail: user.email,
         userName: user.displayName,
+        mealTitle: meal.title,
       });
 
       if (res.data.insertedId) {

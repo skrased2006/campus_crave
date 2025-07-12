@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import useAuth from '../../hooks/useAuth';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { FaTimesCircle } from 'react-icons/fa';
+import Swal from 'sweetalert2';
 
 const RequestedMeals = () => {
   const { user } = useAuth();
@@ -17,12 +18,36 @@ const RequestedMeals = () => {
   });
 
   const handleCancel = async (id) => {
-    const confirm = window.confirm('Are you sure you want to cancel this request?');
-    if (!confirm) return;
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "Do you really want to cancel this request?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, cancel it!",
+    });
 
-    await axiosSecure.delete(`/meal-requests/${id}`);
-    refetch();
+    if (result.isConfirmed) {
+      try {
+        await axiosSecure.delete(`/meal-requests/${id}`);
+        refetch();
+
+        Swal.fire({
+          title: "Cancelled!",
+          text: "Your meal request has been cancelled.",
+          icon: "success",
+          toast: true,
+          position: "top-end",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+      } catch (error) {
+        Swal.fire("Error", "Failed to cancel the request", "error");
+      }
+    }
   };
+
 
   if (!user) {
     return (
@@ -60,15 +85,15 @@ const RequestedMeals = () => {
                     {req.likes}
                   </td>
                   <td className="py-3 px-4 text-center text-blue-600 font-semibold">
-                    {req.reviews_count}
+                    {req.reviews_count || 0}
                   </td>
                   <td className="py-3 px-4 text-center">
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-semibold ${req.status === 'pending'
-                          ? 'bg-yellow-100 text-yellow-700'
-                          : req.status === 'delivered'
-                            ? 'bg-green-100 text-green-700'
-                            : 'bg-gray-100 text-gray-600'
+                        ? 'bg-yellow-100 text-yellow-700'
+                        : req.status === 'delivered'
+                          ? 'bg-green-100 text-green-700'
+                          : 'bg-gray-100 text-gray-600'
                         }`}
                     >
                       {req.status}

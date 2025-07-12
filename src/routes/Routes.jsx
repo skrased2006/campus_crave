@@ -22,6 +22,7 @@ import RequestedMeals from "../pages/DashBoard/RequestedMeals";
 import AllReviews from "../pages/DashBoard/AllReviews";
 import UpcomingMeals from "../pages/DashBoard/UpcomingMeals";
 import UpcomingMealsPage from "../pages/UpcommingMealsPage/UpcomingMealsPage";
+import ServeMeals from "../pages/DashBoard/ServeMeals";
 
 
 
@@ -49,7 +50,9 @@ export const router = createBrowserRouter([
       {
         path: 'upcoming-meals',
         element: <UpcomingMealsPage></UpcomingMealsPage>
-      }
+      },
+
+
 
 
     ]
@@ -118,6 +121,10 @@ export const router = createBrowserRouter([
       {
         path: 'upcoming-meals',
         element: <UpcomingMeals></UpcomingMeals>
+      },
+      {
+        path: 'serve-meals',
+        element: <ServeMeals></ServeMeals>
       }
 
 
