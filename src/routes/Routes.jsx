@@ -23,6 +23,8 @@ import AllReviews from "../pages/DashBoard/AllReviews";
 import UpcomingMeals from "../pages/DashBoard/UpcomingMeals";
 import UpcomingMealsPage from "../pages/UpcommingMealsPage/UpcomingMealsPage";
 import ServeMeals from "../pages/DashBoard/ServeMeals";
+import Forbidden from "../pages/Forbidden/Forbidden";
+import AdminRoute from "./AdminRoute";
 
 
 
@@ -51,6 +53,10 @@ export const router = createBrowserRouter([
         path: 'upcoming-meals',
         element: <UpcomingMealsPage></UpcomingMealsPage>
       },
+      {
+        path: 'forbidden',
+        element: <Forbidden></Forbidden>
+      }
 
 
 
@@ -77,6 +83,8 @@ export const router = createBrowserRouter([
 
 
 
+
+
   {
 
     path: 'dashboard',
@@ -84,19 +92,19 @@ export const router = createBrowserRouter([
     children: [
       {
         path: 'addMeal',
-        element: <AddMeal></AddMeal>
+        element: <AdminRoute> <AddMeal></AddMeal></AdminRoute>
       },
       {
         path: 'allMeals',
-        element: <AllMeals></AllMeals>
+        element: <AdminRoute> <AllMeals></AllMeals></AdminRoute>
       },
       {
         path: 'manegUsers',
-        element: <ManageUsers></ManageUsers>
+        element: <AdminRoute><ManageUsers></ManageUsers></AdminRoute>
       },
       {
         path: 'adminProfile',
-        element: <AdminProfile></AdminProfile>
+        element: <AdminRoute><AdminProfile></AdminProfile></AdminRoute>
       },
       {
         path: 'myProfile',
@@ -116,15 +124,15 @@ export const router = createBrowserRouter([
       },
       {
         path: 'all-reviews',
-        element: <AllReviews></AllReviews>
+        element: <AdminRoute><AllReviews></AllReviews></AdminRoute>
       },
       {
         path: 'upcoming-meals',
-        element: <UpcomingMeals></UpcomingMeals>
+        element: <AdminRoute><UpcomingMeals></UpcomingMeals></AdminRoute>
       },
       {
         path: 'serve-meals',
-        element: <ServeMeals></ServeMeals>
+        element: <AdminRoute><ServeMeals></ServeMeals></AdminRoute>
       }
 
 
