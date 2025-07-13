@@ -1,18 +1,29 @@
-import { Link, NavLink } from "react-router";
-import { useState } from "react";
-import { FaBell } from "react-icons/fa";
+import { Link, NavLink } from "react-router"; // react-router-dom is the package to import from
+import { useState, useEffect } from "react";
+import { FaBell, FaBars, FaTimes, FaHome, FaUtensils, FaClock } from "react-icons/fa";
 import useAuth from "../hooks/useAuth";
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleLogout = () => {
-    logOut()
-  }
+    logOut();
+    setDropdownOpen(false);
+    setMobileMenuOpen(false);
+  };
 
-
-
+  // Close menus on window resize if needed
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setMobileMenuOpen(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const navLinks = (
     <>
@@ -20,87 +31,96 @@ const Navbar = () => {
         <NavLink
           to="/"
           className={({ isActive }) =>
-            isActive ? "font-bold text-primary" : "hover:text-primary"
+            isActive ? "font-bold text-primary flex items-center gap-2" : "hover:text-primary flex items-center gap-2"
           }
+          onClick={() => setMobileMenuOpen(false)}
         >
-          Home
+          <FaHome /> Home
         </NavLink>
       </li>
+
       <li>
         <NavLink
           to="/allmeal"
           className={({ isActive }) =>
-            isActive ? "font-bold text-primary" : "hover:text-primary"
+            isActive ? "font-bold text-primary flex items-center gap-2" : "hover:text-primary flex items-center gap-2"
           }
+          onClick={() => setMobileMenuOpen(false)}
         >
-          Meals
+          <FaUtensils /> Meals
         </NavLink>
       </li>
+
       <li>
         <NavLink
           to="/upcoming-meals"
           className={({ isActive }) =>
-            isActive ? "font-bold text-primary" : "hover:text-primary"
+            isActive ? "font-bold text-primary flex items-center gap-2" : "hover:text-primary flex items-center gap-2"
           }
+          onClick={() => setMobileMenuOpen(false)}
         >
-          Upcoming Meals
+          <FaClock /> Upcoming Meals
         </NavLink>
       </li>
     </>
   );
 
   return (
-    <div className="bg-white shadow-md sticky top-0 z-50">
-      <div className="navbar px-4 py-2 max-w-10/12 mx-auto">
-        <div className="navbar-start">
-          <Link
-            to="/"
-            className="text-2xl font-bold flex items-center gap-2 text-primary"
-          >
-            <img
-              src="https://i.ibb.co/wZX5dygz/images.png"
-              alt="logo"
-              className="w-12 h-12"
-            />
-            Campus Crave
-          </Link>
-        </div>
+    <nav className="bg-white shadow-md sticky top-0 z-50">
+      <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+        {/* Logo */}
+        <Link
+          to="/"
+          className="text-2xl font-bold flex items-center gap-2 text-primary"
+        >
+          <img
+            src="https://i.ibb.co/wZX5dygz/images.png"
+            alt="logo"
+            className="w-10 h-10 sm:w-12 sm:h-12"
+          />
+          Campus Crave
+        </Link>
 
-        <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal px-1 gap-4 text-base font-medium">
-            {navLinks}
-          </ul>
-        </div>
+        {/* Desktop Nav Links */}
+        <ul className="hidden lg:flex gap-8 text-base font-medium">{navLinks}</ul>
 
-        <div className="navbar-end flex items-center gap-4">
+        {/* Right Side */}
+        <div className="flex items-center gap-4">
           {/* Notification Icon */}
-          <button className="btn btn-ghost btn-circle text-lg">
+          <button
+            aria-label="Notifications"
+            className="btn btn-ghost btn-circle text-lg hover:text-primary transition-colors duration-200"
+          >
             <FaBell />
           </button>
 
-          {/* If NOT logged in */}
+          {/* Join Us button for guests */}
           {!user && (
-            <Link to="/login" className="btn btn-primary btn-sm">
+            <Link
+              to="/login"
+              className="btn btn-primary btn-sm px-4 py-1 text-sm whitespace-nowrap"
+            >
               Join Us
             </Link>
           )}
 
-          {/* If logged in */}
+          {/* User avatar & dropdown */}
           {user && (
             <div className="relative">
-              <div
-                className="w-10 h-10 rounded-full border-2 border-primary cursor-pointer overflow-hidden"
+              <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="w-10 h-10 rounded-full border-2 border-primary cursor-pointer overflow-hidden focus:outline-none focus:ring-2 focus:ring-primary"
+                aria-label="User menu"
               >
                 <img
                   src={user.photoURL || "/default-avatar.png"}
-                  alt="User"
+                  alt="User avatar"
                   className="w-full h-full object-cover"
                 />
-              </div>
+              </button>
 
               {dropdownOpen && (
-                <div className="absolute right-0 mt-3 w-48 bg-white shadow-xl rounded-lg border z-50">
+                <div className="absolute right-0 mt-3 w-48 bg-white shadow-xl rounded-lg border z-50 animate-fadeIn">
                   <div className="p-3 border-b">
                     <p className="font-semibold text-gray-700">
                       {user.displayName || "User"}
@@ -108,7 +128,12 @@ const Navbar = () => {
                   </div>
                   <ul className="menu p-2">
                     <li>
-                      <Link to="/dashboard">Dashboard</Link>
+                      <Link
+                        to="/dashboard"
+                        onClick={() => setDropdownOpen(false)}
+                      >
+                        Dashboard
+                      </Link>
                     </li>
                     <li>
                       <button
@@ -123,9 +148,60 @@ const Navbar = () => {
               )}
             </div>
           )}
+
+          {/* Mobile menu button */}
+          <button
+            className="lg:hidden btn btn-ghost text-xl"
+            aria-label="Toggle menu"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? <FaTimes /> : <FaBars />}
+          </button>
         </div>
       </div>
-    </div>
+
+      {/* Mobile Nav Links */}
+      {mobileMenuOpen && (
+        <div className="lg:hidden bg-white border-t shadow-md animate-slideDown">
+          <ul className="flex flex-col gap-4 p-4 text-lg font-medium">
+            {navLinks}
+
+            {/* User options on mobile */}
+            {user ? (
+              <>
+                <li>
+                  <Link
+                    to="/dashboard"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="hover:text-primary"
+                  >
+                    Dashboard
+                  </Link>
+                </li>
+                <li>
+                  <button
+                    onClick={handleLogout}
+                    className="text-red-500 hover:text-red-600"
+                  >
+                    Logout
+                  </button>
+                </li>
+              </>
+            ) : (
+              <li>
+                <Link
+                  to="/login"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="btn btn-primary btn-sm w-full text-center"
+                >
+                  Join Us
+                </Link>
+              </li>
+            )}
+          </ul>
+        </div>
+      )}
+    </nav>
   );
 };
 
