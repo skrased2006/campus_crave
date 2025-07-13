@@ -6,7 +6,10 @@ import Swal from 'sweetalert2';
 
 const RequestedMeals = () => {
   const { user } = useAuth();
+
   const axiosSecure = useAxiosSecure();
+
+  console.log("🔍 user.email:", user?.email);
 
   const { data: requests = [], refetch, isLoading } = useQuery({
     queryKey: ['mealRequests', user?.email],
@@ -16,6 +19,7 @@ const RequestedMeals = () => {
       return res.data;
     },
   });
+
 
   const handleCancel = async (id) => {
     const result = await Swal.fire({

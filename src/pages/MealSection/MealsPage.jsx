@@ -4,6 +4,7 @@ import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { useNavigate } from 'react-router';
 import { motion } from 'framer-motion';
 
+
 const MealsPage = () => {
   const [meals, setMeals] = useState([]);
   const axiosSecure = useAxiosSecure();
@@ -21,10 +22,14 @@ const MealsPage = () => {
   const limit = 6;
 
   const fetchMeals = async () => {
+
     const { search, category, minPrice, maxPrice } = filters;
     const res = await axiosSecure(`/mealpage`, {
-      params: { page, limit, search, category, minPrice, maxPrice }
-    });
+      params: { page, limit, search, category, minPrice, maxPrice },
+    },
+
+
+    );
 
     const newMeals = res.data.meals;
     setTotalMeals(res.data.total);
