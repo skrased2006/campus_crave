@@ -7,7 +7,8 @@ import {
   FaPlusCircle,
   FaUserCircle,
   FaComments,
-  FaCreditCard
+  FaCreditCard,
+  FaClock
 } from "react-icons/fa";
 
 
@@ -136,7 +137,7 @@ const Sidebar = () => {
                   `${navLinkClass} ${isActive ? activeClass : inactiveClass}`
                 }
               >
-                <MdFastfood /> Upcoming Meals
+                <FaClock /> Upcoming Meals
               </NavLink>
 
 

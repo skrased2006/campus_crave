@@ -1,31 +1,68 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import Swal from "sweetalert2";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const AllMeals = () => {
   const [meals, setMeals] = useState([]);
   const [sortField, setSortField] = useState("likes");
   const axiosSecure = useAxiosSecure();
+  const navigate = useNavigate();
 
   useEffect(() => {
     axiosSecure
       .get(`/allmeals?sortBy=${sortField}&order=desc`)
       .then((res) => setMeals(res.data))
       .catch((err) => console.error(err));
-  }, [sortField]);
+  }, [sortField, axiosSecure]);
 
-  const handleDelete = (id) => {
-    // TODO: add delete API call
-    console.log("Delete meal id:", id);
-  };
-
-  const handleUpdate = (id) => {
-    // TODO: redirect or open update modal
-    console.log("Update meal id:", id);
-  };
-
+  // View: redirect to meal details page
   const handleView = (id) => {
-    // TODO: redirect to meal details page
-    console.log("View meal id:", id);
+    navigate(`/meal/${id}`);
+  };
+
+  // Update: redirect to update page (or you can open modal)
+  const handleUpdate = (id) => {
+    navigate(`/meal/update/${id}`);
+  };
+
+  // Delete: delete meal and update UI
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const res = await axiosSecure.delete(`/allmeals/${id}`);
+          if (res.data.deletedCount > 0) {
+            Swal.fire(
+              "Deleted!",
+              "Meal has been deleted.",
+              "success"
+            );
+            setMeals((prev) => prev.filter((meal) => meal._id !== id));
+          } else {
+            Swal.fire(
+              "Error!",
+              "Failed to delete the meal.",
+              "error"
+            );
+          }
+        } catch (error) {
+          Swal.fire(
+            "Error!",
+            "Something went wrong while deleting.",
+            "error"
+          );
+        }
+      }
+    });
   };
 
   return (

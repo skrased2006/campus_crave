@@ -3,9 +3,10 @@ import useAuth from '../../hooks/useAuth';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { FaTimesCircle } from 'react-icons/fa';
 import Swal from 'sweetalert2';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 const RequestedMeals = () => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
 
   const axiosSecure = useAxiosSecure();
 
@@ -61,9 +62,10 @@ const RequestedMeals = () => {
     );
   }
 
-  if (isLoading) {
-    return <p className="text-center py-10 text-lg text-primary">Loading your requests...</p>;
+  if (loading || isLoading) {
+    return <LoadingSpinner />;
   }
+
 
   return (
     <div className="max-w-6xl mx-auto p-6">

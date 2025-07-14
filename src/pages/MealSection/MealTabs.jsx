@@ -11,14 +11,7 @@ const MealTabs = () => {
   const [activeTab, setActiveTab] = useState("Breakfast");
   const navigate = useNavigate();
 
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-    isError,
-  } = useInfiniteQuery({
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError, } = useInfiniteQuery({
     queryKey: ["meals", activeTab],
     queryFn: async ({ pageParam = 0 }) => {
       let url = `http://localhost:5000/meals?page=${pageParam}&size=${pageSize}`;
@@ -125,3 +118,61 @@ const MealTabs = () => {
 };
 
 export default MealTabs;
+
+
+
+// import { useInfiniteQuery } from '@tanstack/react-query';
+// import React, { useState } from 'react';
+// import { useNavigate } from 'react-router';
+
+
+
+
+// const categories = ["Breakfast", "Lunch", "Dinner", "All Meals"];
+// const pageSize = 6;
+
+
+
+
+
+// const MealTabs = () => {
+//   const [activeTab, setActiveTab] = useState("Breakfast");
+//   const navigate = useNavigate();
+
+
+//   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError, } = useInfiniteQuery({
+
+//     queryKey: ['meals', activeTab],
+//     queryFn: async ({ pageParam = 0 }) => {
+//       let url = `http://localhost:5000/meals?page=${pageParam}&${pageSize}`;
+
+//       if (activeTab !== "All Meals") {
+//         url += `&category=${activeTab}`
+//       }
+//       const res = await fetch(url);
+//       return res.json();
+
+
+//     }
+//         getNextPageParam: (lastPage, allPages) => {
+//       if (lastPage.length === pageSize) {
+//         return allPages.length;
+//       }
+//       else {
+//         return undefined;
+//       }
+//     }
+
+
+//   })
+
+
+
+//   return (
+//     <div>
+
+//     </div>
+//   );
+// };
+
+// export default MealTabs;

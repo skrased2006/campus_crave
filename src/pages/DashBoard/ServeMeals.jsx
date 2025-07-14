@@ -83,8 +83,8 @@ const ServeMeals = () => {
                 <td>
                   <span
                     className={`badge ${r.status === "delivered"
-                        ? "badge-success"
-                        : "badge-warning"
+                      ? "badge-success"
+                      : "badge-warning"
                       }`}
                   >
                     {r.status}

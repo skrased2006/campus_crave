@@ -9,7 +9,7 @@ const ManageUsers = () => {
   const axiosSecure = useAxiosSecure();
   const [searchText, setSearchText] = useState("");
 
-  // ✅ Fetch users with search query (username or email)
+
   const { data: users = [], refetch, isLoading } = useQuery({
     queryKey: ["users", searchText],
     queryFn: async () => {
@@ -18,7 +18,7 @@ const ManageUsers = () => {
     },
   });
 
-  // ✅ Mutation to update role
+
   const { mutateAsync: updateRole } = useMutation({
     mutationFn: async ({ id, role }) =>
       await axiosSecure.patch(`/users/${id}/role`, { role }),

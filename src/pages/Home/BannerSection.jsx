@@ -42,8 +42,6 @@ const BannerSection = () => {
               <h2 className="text-3xl md:text-5xl font-bold mb-3">{banner.title}</h2>
               <p className="mb-6 text-sm md:text-base">{banner.desc}</p>
 
-              {/* Search Bar */}
-              {/* Search Bar */}
               <div className="flex items-center w-full max-w-md bg-white rounded-full overflow-hidden shadow-md border">
                 <input
                   type="text"
