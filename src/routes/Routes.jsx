@@ -25,6 +25,7 @@ import UpcomingMealsPage from "../pages/UpcommingMealsPage/UpcomingMealsPage";
 import ServeMeals from "../pages/DashBoard/ServeMeals";
 import Forbidden from "../pages/Forbidden/Forbidden";
 import AdminRoute from "./AdminRoute";
+import DashBoardHome from "../pages/DashBoardHome/DashBoardHome";
 
 
 
@@ -90,6 +91,12 @@ export const router = createBrowserRouter([
     path: 'dashboard',
     element: <DashBoardLayout></DashBoardLayout>,
     children: [
+
+      {
+        index: true,
+        element: <DashBoardHome></DashBoardHome>
+
+      },
       {
         path: 'addMeal',
         element: <AdminRoute> <AddMeal></AddMeal></AdminRoute>

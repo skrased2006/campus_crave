@@ -56,7 +56,7 @@ const AllReviews = () => {
               <tr key={review._id}>
                 <td>{review.mealTitle || "Untitled Meal"}</td>
                 <td>{review.like || 0}</td>
-                <td>{review.review}</td>
+                <td>{review.reviews_count}</td>
                 <td className="space-x-2">
                   <button
                     onClick={() => handleDelete(review._id)}

@@ -136,7 +136,7 @@ const MealDetails = () => {
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
       >
-        <h3 className="text-2xl font-bold mb-4 text-primary">💬 Reviews</h3>
+        <h3 className="text-2xl font-bold mb-4 text-primary">💬 Reviews ({reviews.length})</h3>
 
         {user && (
           <form onSubmit={handleReviewSubmit} className="mb-6 space-y-2">
