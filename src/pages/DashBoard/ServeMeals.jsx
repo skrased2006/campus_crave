@@ -57,7 +57,7 @@ const ServeMeals = () => {
   const totalPages = Math.ceil(requests.length / itemsPerPage);
 
   return (
-    <div className="p-6">
+    <div className="p-6 max-w-7xl mx-auto">
       <h2 className="text-2xl font-bold mb-4 text-primary">Serve Meals</h2>
 
       <input
@@ -68,8 +68,9 @@ const ServeMeals = () => {
         className="input input-bordered w-full max-w-md mb-6"
       />
 
-      <div className="overflow-x-auto">
-        <table className="table">
+      {/* Desktop Table */}
+      <div className="hidden md:block overflow-x-auto rounded-lg shadow bg-white">
+        <table className="table w-full">
           <thead>
             <tr className="bg-base-200 text-base-content">
               <th>#</th>
@@ -81,55 +82,105 @@ const ServeMeals = () => {
             </tr>
           </thead>
           <tbody>
-            {currentRequests.map((r, idx) => (
-              <tr key={r._id}>
-                <td>{indexOfFirstItem + idx + 1}</td>
-                <td>{r.mealTitle}</td>
-                <td>{r.userName}</td>
-                <td>{r.userEmail}</td>
-                <td>
-                  <span
-                    className={`badge ${r.status === "delivered"
-                      ? "badge-success"
-                      : "badge-warning"
-                      }`}
-                  >
-                    {r.status}
-                  </span>
-                </td>
-                <td>
-                  {r.status !== "delivered" ? (
-                    <button
-                      onClick={() => handleServe(r._id)}
-                      className="btn btn-sm btn-primary"
-                    >
-                      Serve
-                    </button>
-                  ) : (
-                    <span className="text-sm text-gray-400">Already Served</span>
-                  )}
-                </td>
-              </tr>
-            ))}
-            {currentRequests.length === 0 && (
+            {currentRequests.length === 0 ? (
               <tr>
-                <td colSpan="6" className="text-center text-gray-500">
+                <td colSpan="6" className="text-center text-gray-500 py-6">
                   No meal requests found.
                 </td>
               </tr>
+            ) : (
+              currentRequests.map((r, idx) => (
+                <tr key={r._id}>
+                  <td>{indexOfFirstItem + idx + 1}</td>
+                  <td>{r.mealTitle}</td>
+                  <td>{r.userName}</td>
+                  <td>{r.userEmail}</td>
+                  <td>
+                    <span
+                      className={`badge ${r.status === "delivered"
+                          ? "badge-success"
+                          : "badge-warning"
+                        }`}
+                    >
+                      {r.status}
+                    </span>
+                  </td>
+                  <td>
+                    {r.status !== "delivered" ? (
+                      <button
+                        onClick={() => handleServe(r._id)}
+                        className="btn btn-sm btn-primary"
+                      >
+                        Serve
+                      </button>
+                    ) : (
+                      <span className="text-sm text-gray-400">
+                        Already Served
+                      </span>
+                    )}
+                  </td>
+                </tr>
+              ))
             )}
           </tbody>
         </table>
       </div>
 
+      {/* Mobile Card View */}
+      <div className="md:hidden space-y-4">
+        {currentRequests.length === 0 ? (
+          <p className="text-center text-gray-500">No meal requests found.</p>
+        ) : (
+          currentRequests.map((r, idx) => (
+            <div
+              key={r._id}
+              className="bg-white rounded-lg shadow p-4 flex flex-col gap-2"
+            >
+              <div className="flex justify-between items-center">
+                <h3 className="font-semibold text-lg">{r.mealTitle}</h3>
+                <span
+                  className={`badge ${r.status === "delivered"
+                      ? "badge-success"
+                      : "badge-warning"
+                    }`}
+                >
+                  {r.status}
+                </span>
+              </div>
+              <p>
+                <strong>User:</strong> {r.userName}
+              </p>
+              <p>
+                <strong>Email:</strong> {r.userEmail}
+              </p>
+              <div className="flex gap-2 mt-3">
+                {r.status !== "delivered" ? (
+                  <button
+                    onClick={() => handleServe(r._id)}
+                    className="btn btn-sm btn-primary flex-1"
+                  >
+                    Serve
+                  </button>
+                ) : (
+                  <span className="text-sm text-gray-400 flex-1 text-center">
+                    Already Served
+                  </span>
+                )}
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
       {/* Pagination Buttons */}
       {totalPages > 1 && (
-        <div className="flex justify-center mt-6 gap-2">
+        <div className="flex justify-center mt-6 gap-2 flex-wrap">
           {Array.from({ length: totalPages }, (_, i) => (
             <button
               key={i}
               onClick={() => setCurrentPage(i + 1)}
-              className={`btn btn-sm ${currentPage === i + 1 ? "btn-primary" : "btn-outline"}`}
+              className={`btn btn-sm ${currentPage === i + 1 ? "btn-primary" : "btn-outline"
+                }`}
             >
               {i + 1}
             </button>
