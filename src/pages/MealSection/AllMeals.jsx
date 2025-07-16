@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import MealUpdate from "./MealUpdate";
 
 const AllMeals = () => {
   const [meals, setMeals] = useState([]);
   const [sortField, setSortField] = useState("likes");
   const axiosSecure = useAxiosSecure();
+  const [selectedMeal, setSelectedMeal] = useState(null);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,17 +19,31 @@ const AllMeals = () => {
       .catch((err) => console.error(err));
   }, [sortField, axiosSecure]);
 
-  // View: redirect to meal details page
   const handleView = (id) => {
     navigate(`/meal/${id}`);
   };
 
-  // Update: redirect to update page (or you can open modal)
-  const handleUpdate = (id) => {
-    navigate(`/meal/update/${id}`);
+  const handleUpdate = (meal) => {
+    setSelectedMeal(meal);
+    setShowUpdateModal(true);
   };
 
-  // Delete: delete meal and update UI
+  const handleMealUpdate = async (updatedMeal) => {
+    try {
+      const res = await axiosSecure.put(`/meals/${updatedMeal._id}`, updatedMeal);
+      if (res.data.modifiedCount > 0) {
+        Swal.fire("Success", "Meal updated successfully", "success");
+        setMeals((prev) =>
+          prev.map((m) => (m._id === updatedMeal._id ? updatedMeal : m))
+        );
+        setShowUpdateModal(false);
+      }
+    } catch (err) {
+      console.error(err);
+      Swal.fire("Error", "Failed to update meal", "error");
+    }
+  };
+
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -41,25 +58,13 @@ const AllMeals = () => {
         try {
           const res = await axiosSecure.delete(`/allmeals/${id}`);
           if (res.data.deletedCount > 0) {
-            Swal.fire(
-              "Deleted!",
-              "Meal has been deleted.",
-              "success"
-            );
+            Swal.fire("Deleted!", "Meal has been deleted.", "success");
             setMeals((prev) => prev.filter((meal) => meal._id !== id));
           } else {
-            Swal.fire(
-              "Error!",
-              "Failed to delete the meal.",
-              "error"
-            );
+            Swal.fire("Error!", "Failed to delete the meal.", "error");
           }
         } catch (error) {
-          Swal.fire(
-            "Error!",
-            "Something went wrong while deleting.",
-            "error"
-          );
+          Swal.fire("Error!", "Something went wrong while deleting.", "error");
         }
       }
     });
@@ -68,8 +73,6 @@ const AllMeals = () => {
   return (
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-4">All Meals</h2>
-
-      {/* Sorting */}
       <div className="mb-4">
         <label className="mr-2 font-semibold">Sort By:</label>
         <select
@@ -81,8 +84,6 @@ const AllMeals = () => {
           <option value="reviews_count">Reviews Count</option>
         </select>
       </div>
-
-      {/* Meals Table */}
       <table className="table w-full border">
         <thead>
           <tr className="bg-gray-100">
@@ -119,7 +120,7 @@ const AllMeals = () => {
                     View
                   </button>
                   <button
-                    onClick={() => handleUpdate(meal._id)}
+                    onClick={() => handleUpdate(meal)}
                     className="btn btn-sm btn-warning"
                   >
                     Update
@@ -136,6 +137,18 @@ const AllMeals = () => {
           )}
         </tbody>
       </table>
+
+      {showUpdateModal && selectedMeal && (
+        <MealUpdate
+          mealData={selectedMeal}
+          closeModal={() => setShowUpdateModal(false)}
+          refetch={() =>
+            axiosSecure
+              .get(`/allmeals?sortBy=${sortField}&order=desc`)
+              .then((res) => setMeals(res.data))
+          }
+        />
+      )}
     </div>
   );
 };
