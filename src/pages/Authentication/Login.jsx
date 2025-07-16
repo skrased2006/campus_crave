@@ -4,14 +4,15 @@ import { FcGoogle } from "react-icons/fc";
 import { Player } from "@lottiefiles/react-lottie-player";
 import useAuth from "../../hooks/useAuth";
 
-import foodAnim from "../../assets/animations/Login Leady.json"; // তোমার JSON animation path
+import foodAnim from "../../assets/animations/Login Leady.json";
 import toast from "react-hot-toast";
 
 const Login = () => {
   const { signIn, signInwithGoogle } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
+  const from = location.state || "/";
+  console.log(from)
   const [error, setError] = useState("");
 
   const handleLogin = async (e) => {
@@ -23,7 +24,7 @@ const Login = () => {
       await signIn(email, password);
       toast.success("🎉 Logged in successfully!");
 
-      navigate(from, { replace: true });
+      navigate(from);
     } catch (err) {
       setError("Invalid email or password");
     }
@@ -32,7 +33,7 @@ const Login = () => {
   const handleGoogleLogin = async () => {
     try {
       await signInwithGoogle();
-      navigate(from, { replace: true });
+      navigate(from);
     } catch (err) {
       console.error(err.message);
     }

@@ -1,31 +1,39 @@
 import { FaHeart } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { useState } from "react";
-import { Navigate } from "react-router";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { toast } from "react-hot-toast";
 
-const LikeButton = ({ mealId, likes, onLikeUpdate }) => {
-  const { user } = useAuth();
+const LikeButton = ({ mealId, likes = 0, refetch }) => {
+  const { user, isPremium, likedMeals, setLikedMeals } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(likedMeals?.has(mealId));
 
   const handleLike = async () => {
     if (!user) {
-
-      <Navigate to='/login'></Navigate>
+      return Swal.fire("Please login first");
     }
 
-    if (liked) return; // Prevent multiple likes
+    if (!isPremium) {
+      return Swal.fire("Only premium users can like meals");
+    }
+
+    if (likedMeals.has(mealId)) {
+      return Swal.fire("You already liked this meal");
+    }
 
     try {
-      const res = await axiosSecure.patch(`/meals/like/${mealId}`);
-      if (res.data.modifiedCount > 0) {
+      const res = await axiosSecure.patch(`/upcoming-meals/${mealId}/like`);
+      if (res.data.success) {
+        toast.success("Thanks for liking!");
         setLiked(true);
-        onLikeUpdate(); // update parent state or re-fetch data
+        setLikedMeals((prev) => new Set(prev).add(mealId)); // update context state
+        if (refetch) refetch(); // optional UI update
       }
     } catch (err) {
-      console.error("Error liking meal:", err);
+      console.error(err);
+      toast.error("Failed to like meal");
     }
   };
 
@@ -33,7 +41,9 @@ const LikeButton = ({ mealId, likes, onLikeUpdate }) => {
     <button
       onClick={handleLike}
       disabled={liked}
-      className={`flex items-center gap-1 ${liked ? "text-yellow-400 cursor-not-allowed" : "text-red-500 hover:text-red-600"
+      className={`flex items-center gap-1 text-lg ${liked
+        ? "text-yellow-500 cursor-not-allowed"
+        : "text-red-500 hover:text-red-600"
         }`}
     >
       <FaHeart />

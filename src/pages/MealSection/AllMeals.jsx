@@ -12,6 +12,10 @@ const AllMeals = () => {
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const navigate = useNavigate();
 
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
   useEffect(() => {
     axiosSecure
       .get(`/allmeals?sortBy=${sortField}&order=desc`)
@@ -19,30 +23,28 @@ const AllMeals = () => {
       .catch((err) => console.error(err));
   }, [sortField, axiosSecure]);
 
-  const handleView = (id) => {
-    navigate(`/meal/${id}`);
-  };
+  const handleView = (id) => navigate(`/meal/${id}`);
 
   const handleUpdate = (meal) => {
     setSelectedMeal(meal);
     setShowUpdateModal(true);
   };
 
-  const handleMealUpdate = async (updatedMeal) => {
-    try {
-      const res = await axiosSecure.put(`/meals/${updatedMeal._id}`, updatedMeal);
-      if (res.data.modifiedCount > 0) {
-        Swal.fire("Success", "Meal updated successfully", "success");
-        setMeals((prev) =>
-          prev.map((m) => (m._id === updatedMeal._id ? updatedMeal : m))
-        );
-        setShowUpdateModal(false);
-      }
-    } catch (err) {
-      console.error(err);
-      Swal.fire("Error", "Failed to update meal", "error");
-    }
-  };
+  // const handleMealUpdate = async (updatedMeal) => {
+  //   try {
+  //     const res = await axiosSecure.put(`/meals/${updatedMeal._id}`, updatedMeal);
+  //     if (res.data.modifiedCount > 0) {
+  //       Swal.fire("Success", "Meal updated successfully", "success");
+  //       setMeals((prev) =>
+  //         prev.map((m) => (m._id === updatedMeal._id ? updatedMeal : m))
+  //       );
+  //       setShowUpdateModal(false);
+  //     }
+  //   } catch (err) {
+  //     console.error(err);
+  //     Swal.fire("Error", "Failed to update meal", "error");
+  //   }
+  // };
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -70,9 +72,17 @@ const AllMeals = () => {
     });
   };
 
+  // Pagination logic
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentMeals = meals.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(meals.length / itemsPerPage);
+
   return (
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-4">All Meals</h2>
+
+      {/* Sorting */}
       <div className="mb-4">
         <label className="mr-2 font-semibold">Sort By:</label>
         <select
@@ -84,6 +94,8 @@ const AllMeals = () => {
           <option value="reviews_count">Reviews Count</option>
         </select>
       </div>
+
+      {/* Table */}
       <table className="table w-full border">
         <thead>
           <tr className="bg-gray-100">
@@ -97,19 +109,19 @@ const AllMeals = () => {
           </tr>
         </thead>
         <tbody>
-          {meals.length === 0 ? (
+          {currentMeals.length === 0 ? (
             <tr>
               <td colSpan={7} className="text-center py-4">
                 No meals found.
               </td>
             </tr>
           ) : (
-            meals.map((meal, index) => (
+            currentMeals.map((meal, index) => (
               <tr key={meal._id} className="hover:bg-gray-50">
-                <td>{index + 1}</td>
+                <td>{indexOfFirstItem + index + 1}</td>
                 <td>{meal.title}</td>
                 <td>{meal.likes}</td>
-                <td>{meal.reviews_count}</td>
+                <td>{meal.reviews_count || 0}</td>
                 <td>{meal.rating}</td>
                 <td>{meal.distributor || "N/A"}</td>
                 <td className="space-x-2">
@@ -138,6 +150,20 @@ const AllMeals = () => {
         </tbody>
       </table>
 
+      {/* Pagination */}
+      <div className="flex justify-center mt-6 gap-2">
+        {Array.from({ length: totalPages }, (_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrentPage(i + 1)}
+            className={`btn btn-sm ${currentPage === i + 1 ? "btn-primary" : "btn-outline"}`}
+          >
+            {i + 1}
+          </button>
+        ))}
+      </div>
+
+      {/* Update Modal */}
       {showUpdateModal && selectedMeal && (
         <MealUpdate
           mealData={selectedMeal}

@@ -45,6 +45,14 @@ const Sidebar = () => {
 
         {/* Navigation */}
         <nav className="px-4 py-6 space-y-2">
+          <NavLink
+            to="/dashboard"
+            end
+            className={({ isActive }) => `${navLinkClass} ${isActive ? activeClass : inactiveClass}`}
+          >
+            <FaTachometerAlt /> Dashboard
+          </NavLink>
+
 
           {
             !roleLoading && role === 'user' &&

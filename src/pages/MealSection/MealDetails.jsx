@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import { FaThumbsUp } from "react-icons/fa";
 import useUserRole from "../../hooks/useUserRole";
 import { motion } from "framer-motion";
+import toast from "react-hot-toast";
 
 const MealDetails = () => {
   const { id } = useParams();
@@ -44,7 +45,10 @@ const MealDetails = () => {
   };
 
   const handleRequest = async () => {
-    if (!user) return navigate("/login");
+    if (!user) {
+      return toast.error("Please login to continue");
+    }
+
 
     if (badge === "Bronze") {
       return Swal.fire("Only premium users can request meals.");

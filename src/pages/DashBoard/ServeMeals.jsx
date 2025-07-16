@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 
@@ -8,12 +7,16 @@ const ServeMeals = () => {
   const [search, setSearch] = useState("");
   const axiosSecure = useAxiosSecure();
 
-  // Fetch meal requests from server with search
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
   useEffect(() => {
     const fetchRequests = async () => {
       try {
         const res = await axiosSecure.get(`/meal-requests?search=${search}`);
         setRequests(res.data);
+        setCurrentPage(1); // reset page when search changes
       } catch (err) {
         console.error("Error fetching meal requests", err);
       }
@@ -22,7 +25,6 @@ const ServeMeals = () => {
     fetchRequests();
   }, [search, axiosSecure]);
 
-  // Handle meal serve
   const handleServe = async (id) => {
     try {
       const res = await axiosSecure.patch(`/meal-requests/${id}/deliver`);
@@ -37,7 +39,6 @@ const ServeMeals = () => {
           timerProgressBar: true,
         });
 
-        // Update UI
         setRequests((prev) =>
           prev.map((req) =>
             req._id === id ? { ...req, status: "delivered" } : req
@@ -48,6 +49,12 @@ const ServeMeals = () => {
       Swal.fire("Error", "Something went wrong", "error");
     }
   };
+
+  // Pagination logic
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentRequests = requests.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(requests.length / itemsPerPage);
 
   return (
     <div className="p-6">
@@ -74,9 +81,9 @@ const ServeMeals = () => {
             </tr>
           </thead>
           <tbody>
-            {requests.map((r, idx) => (
+            {currentRequests.map((r, idx) => (
               <tr key={r._id}>
-                <td>{idx + 1}</td>
+                <td>{indexOfFirstItem + idx + 1}</td>
                 <td>{r.mealTitle}</td>
                 <td>{r.userName}</td>
                 <td>{r.userEmail}</td>
@@ -104,7 +111,7 @@ const ServeMeals = () => {
                 </td>
               </tr>
             ))}
-            {requests.length === 0 && (
+            {currentRequests.length === 0 && (
               <tr>
                 <td colSpan="6" className="text-center text-gray-500">
                   No meal requests found.
@@ -114,6 +121,21 @@ const ServeMeals = () => {
           </tbody>
         </table>
       </div>
+
+      {/* Pagination Buttons */}
+      {totalPages > 1 && (
+        <div className="flex justify-center mt-6 gap-2">
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentPage(i + 1)}
+              className={`btn btn-sm ${currentPage === i + 1 ? "btn-primary" : "btn-outline"}`}
+            >
+              {i + 1}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
