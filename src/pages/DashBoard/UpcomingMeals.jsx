@@ -112,6 +112,7 @@ const UpcomingMeals = () => {
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
+      {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-3">
         <h2 className="text-3xl font-bold text-primary">Upcoming Meals</h2>
         <button
@@ -122,8 +123,61 @@ const UpcomingMeals = () => {
         </button>
       </div>
 
-      {/* Card grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* Desktop/tablet: Table */}
+      <div className="hidden md:block overflow-x-auto bg-white rounded-lg shadow">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-100 text-gray-700 text-sm uppercase">
+            <tr>
+              <th className="py-3 px-4 text-left">Image</th>
+              <th className="py-3 px-4 text-left">Title</th>
+              <th className="py-3 px-4 text-left">Category</th>
+              <th className="py-3 px-4 text-left">Price</th>
+              <th className="py-3 px-4 text-left">Distributor</th>
+              <th className="py-3 px-4 text-left">Likes</th>
+              <th className="py-3 px-4 text-left">Rating</th>
+              <th className="py-3 px-4 text-left">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-100">
+            {upcomingMeals.length > 0 ? (
+              upcomingMeals.map((meal) => (
+                <tr key={meal._id} className="hover:bg-gray-50">
+                  <td className="py-2 px-4">
+                    <img
+                      src={meal.image}
+                      alt={meal.title}
+                      className="w-16 h-16 object-cover rounded"
+                    />
+                  </td>
+                  <td className="py-2 px-4">{meal.title}</td>
+                  <td className="py-2 px-4">{meal.category}</td>
+                  <td className="py-2 px-4">${meal.price?.toFixed(2)}</td>
+                  <td className="py-2 px-4">{meal.distributor}</td>
+                  <td className="py-2 px-4">{meal.likes || 0}</td>
+                  <td className="py-2 px-4">{meal.rating?.toFixed(1)}</td>
+                  <td className="py-2 px-4">
+                    <button
+                      onClick={() => handlePublish(meal._id)}
+                      className="btn btn-success btn-sm"
+                    >
+                      Publish
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="8" className="text-center text-gray-500 py-6">
+                  No upcoming meals found.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Mobile: Cards */}
+      <div className="md:hidden grid grid-cols-1 gap-6">
         {upcomingMeals.length > 0 ? (
           upcomingMeals.map((meal) => (
             <div
@@ -156,13 +210,11 @@ const UpcomingMeals = () => {
             </div>
           ))
         ) : (
-          <p className="col-span-full text-center text-gray-500">
-            No upcoming meals found.
-          </p>
+          <p className="text-center text-gray-500">No upcoming meals found.</p>
         )}
       </div>
 
-      {/* Modal */}
+      {/* Modal for adding new upcoming meal */}
       {showModal && (
         <div
           className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4"

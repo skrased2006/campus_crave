@@ -2,6 +2,7 @@ import { Link, NavLink } from "react-router"; // react-router-dom is the package
 import { useState, useEffect } from "react";
 import { FaBell, FaBars, FaTimes, FaHome, FaUtensils, FaClock } from "react-icons/fa";
 import useAuth from "../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
@@ -9,12 +10,20 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleLogout = () => {
-    logOut();
-    setDropdownOpen(false);
-    setMobileMenuOpen(false);
+    logOut()
+      .then(() => {
+        toast.success("👋 Logged out successfully!");
+        setDropdownOpen(false);
+        setMobileMenuOpen(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.error("❌ Logout failed. Please try again.");
+      });
   };
 
-  // Close menus on window resize if needed
+
+
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 1024) {

@@ -115,10 +115,10 @@ const RequestedMeals = () => {
                     <td className="py-3 px-4 text-center whitespace-nowrap">
                       <span
                         className={`px-3 py-1 rounded-full text-xs sm:text-sm font-semibold ${req.status === 'pending'
-                            ? 'bg-yellow-100 text-yellow-700'
-                            : req.status === 'delivered'
-                              ? 'bg-green-100 text-green-700'
-                              : 'bg-gray-100 text-gray-600'
+                          ? 'bg-yellow-100 text-yellow-700'
+                          : req.status === 'delivered'
+                            ? 'bg-green-100 text-green-700'
+                            : 'bg-gray-100 text-gray-600'
                           }`}
                       >
                         {req.status}
@@ -150,10 +150,10 @@ const RequestedMeals = () => {
                   <h3 className="font-semibold text-lg text-gray-800">{req.mealTitle}</h3>
                   <span
                     className={`px-3 py-1 rounded-full text-xs font-semibold ${req.status === 'pending'
-                        ? 'bg-yellow-100 text-yellow-700'
-                        : req.status === 'delivered'
-                          ? 'bg-green-100 text-green-700'
-                          : 'bg-gray-100 text-gray-600'
+                      ? 'bg-yellow-100 text-yellow-700'
+                      : req.status === 'delivered'
+                        ? 'bg-green-100 text-green-700'
+                        : 'bg-gray-100 text-gray-600'
                       }`}
                   >
                     {req.status}

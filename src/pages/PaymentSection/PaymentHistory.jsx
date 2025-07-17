@@ -19,46 +19,87 @@ const PaymentHistory = () => {
   if (isLoading) return <LoadingSpinner />;
 
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4 text-primary text-center">Payment History</h2>
+    <div className="p-4 max-w-6xl mx-auto">
+      <h2 className="text-2xl font-bold mb-6 text-primary text-center">Payment History</h2>
 
       {payments.length === 0 ? (
         <p className="text-gray-500 text-center">No payments found.</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {payments.map((payment, idx) => (
-            <div
-              key={payment._id}
-              className="bg-white shadow-md rounded-xl p-4 border border-gray-100"
-            >
-              <h3 className="text-lg font-semibold text-primary mb-1">{payment.packageTitle}</h3>
-              <p className="text-sm mb-1">
-                <span className="font-medium">Badge:</span>{" "}
-                <span
-                  className={`badge ${payment.badge === "Platinum"
-                      ? "bg-purple-500 text-white"
+        <>
+          {/* ✅ Desktop/tablet view: Table */}
+          <div className="hidden md:block overflow-x-auto rounded-xl shadow bg-white">
+            <table className="min-w-full divide-y divide-gray-200 text-sm">
+              <thead className="bg-gray-100 text-gray-700 uppercase text-xs">
+                <tr>
+                  <th className="px-4 py-3 text-left">#</th>
+                  <th className="px-4 py-3 text-left">Package</th>
+                  <th className="px-4 py-3 text-left">Badge</th>
+                  <th className="px-4 py-3 text-left">Amount</th>
+                  <th className="px-4 py-3 text-left">Transaction ID</th>
+                  <th className="px-4 py-3 text-left">Date</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {payments.map((payment, index) => (
+                  <tr key={payment._id} className="hover:bg-gray-50">
+                    <td className="px-4 py-2">{index + 1}</td>
+                    <td className="px-4 py-2 font-medium">{payment.packageTitle}</td>
+                    <td className="px-4 py-2">
+                      <span className={`badge text-white px-2 py-1 rounded-full ${payment.badge === "Platinum"
+                        ? "bg-purple-500"
+                        : payment.badge === "Gold"
+                          ? "bg-yellow-500"
+                          : "bg-gray-400"
+                        }`}>
+                        {payment.badge}
+                      </span>
+                    </td>
+                    <td className="px-4 py-2">${payment.amount}</td>
+                    <td className="px-4 py-2 break-all">{payment.transactionId}</td>
+                    <td className="px-4 py-2">{new Date(payment.date).toLocaleString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* ✅ Mobile view: Cards */}
+          <div className="md:hidden space-y-4">
+            {payments.map((payment) => (
+              <div
+                key={payment._id}
+                className="bg-white shadow rounded-xl p-4 border border-gray-100"
+              >
+                <h3 className="text-lg font-semibold text-primary mb-2">{payment.packageTitle}</h3>
+
+                <div className="flex items-center justify-between mb-1">
+                  <span className="font-medium">Badge:</span>
+                  <span
+                    className={`badge text-white px-3 py-1 rounded-full text-sm ${payment.badge === "Platinum"
+                      ? "bg-purple-500"
                       : payment.badge === "Gold"
-                        ? "bg-yellow-500 text-white"
-                        : "bg-gray-400 text-white"
-                    }`}
-                >
-                  {payment.badge}
-                </span>
-              </p>
-              <p className="text-sm mb-1">
-                <span className="font-medium">Amount:</span> ${payment.amount}
-              </p>
-              <p className="text-sm mb-1 break-words">
-                <span className="font-medium">Transaction ID:</span>{" "}
-                {payment.transactionId}
-              </p>
-              <p className="text-sm text-gray-500">
-                <span className="font-medium">Date:</span>{" "}
-                {new Date(payment.date).toLocaleString()}
-              </p>
-            </div>
-          ))}
-        </div>
+                        ? "bg-yellow-500"
+                        : "bg-gray-400"
+                      }`}
+                  >
+                    {payment.badge}
+                  </span>
+                </div>
+
+                <div className="text-sm text-gray-700 space-y-1 mt-2">
+                  <p><span className="font-medium">Amount:</span> ${payment.amount}</p>
+                  <p className="break-words">
+                    <span className="font-medium">Transaction ID:</span> {payment.transactionId}
+                  </p>
+                  <p>
+                    <span className="font-medium">Date:</span>{" "}
+                    {new Date(payment.date).toLocaleString()}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );

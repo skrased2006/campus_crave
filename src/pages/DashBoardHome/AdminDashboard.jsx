@@ -25,7 +25,7 @@ export default function AdminDashboard() {
     queryKey: ["adminStats"],
     queryFn: async () => {
       const res = await axiosSecure.get("/admin/dashboard-stats");
-      return res.data; // { totalMeals, totalReviews, totalLikes, totalRequests }
+      return res.data;
     },
     staleTime: 1000 * 60 * 5,
   });

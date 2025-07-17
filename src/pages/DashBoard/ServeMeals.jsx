@@ -7,7 +7,6 @@ const ServeMeals = () => {
   const [search, setSearch] = useState("");
   const axiosSecure = useAxiosSecure();
 
-  // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
@@ -16,7 +15,7 @@ const ServeMeals = () => {
       try {
         const res = await axiosSecure.get(`/meal-requests?search=${search}`);
         setRequests(res.data);
-        setCurrentPage(1); // reset page when search changes
+        setCurrentPage(1);
       } catch (err) {
         console.error("Error fetching meal requests", err);
       }
@@ -98,8 +97,8 @@ const ServeMeals = () => {
                   <td>
                     <span
                       className={`badge ${r.status === "delivered"
-                          ? "badge-success"
-                          : "badge-warning"
+                        ? "badge-success"
+                        : "badge-warning"
                         }`}
                     >
                       {r.status}
@@ -140,8 +139,8 @@ const ServeMeals = () => {
                 <h3 className="font-semibold text-lg">{r.mealTitle}</h3>
                 <span
                   className={`badge ${r.status === "delivered"
-                      ? "badge-success"
-                      : "badge-warning"
+                    ? "badge-success"
+                    : "badge-warning"
                     }`}
                 >
                   {r.status}

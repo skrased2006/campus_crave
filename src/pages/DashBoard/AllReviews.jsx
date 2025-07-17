@@ -62,7 +62,7 @@ const AllReviews = () => {
               <tr key={review._id}>
                 <td>{review.mealTitle || "Untitled Meal"}</td>
                 <td>{review.likes || 0}</td>
-                <td>{review.review || review.reviews_count || "No review text"}</td>
+                <td>{review.reviews_count || "No review text"}</td>
                 <td className="space-x-2">
                   <button
                     onClick={() => handleDelete(review._id)}
@@ -96,7 +96,7 @@ const AllReviews = () => {
             </p>
             <p className="mb-3">
               <span className="font-semibold">Review:</span>{" "}
-              {review.review || review.reviews_count || "No review text"}
+              {review.reviews_count || 0}
             </p>
             <div className="flex gap-2">
               <button

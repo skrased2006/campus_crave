@@ -1,4 +1,3 @@
-// MealUpdate.jsx
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
@@ -30,7 +29,7 @@ const MealUpdate = ({ mealData, closeModal, refetch }) => {
   const onSubmit = async (data) => {
     let updatedImage = mealData.image;
 
-    // If new image selected
+
     if (data.image.length > 0) {
       const formData = new FormData();
       formData.append("image", data.image[0]);

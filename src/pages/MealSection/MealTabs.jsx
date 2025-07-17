@@ -14,7 +14,7 @@ const MealTabs = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError, } = useInfiniteQuery({
     queryKey: ["meals", activeTab],
     queryFn: async ({ pageParam = 0 }) => {
-      let url = `http://localhost:5000/meals?page=${pageParam}&size=${pageSize}`;
+      let url = `https://campas-crave-server.vercel.app/meals?page=${pageParam}&size=${pageSize}`;
       if (activeTab !== "All Meals") {
         url += `&category=${activeTab}`;
       }
@@ -22,11 +22,11 @@ const MealTabs = () => {
       return res.data;
     },
     getNextPageParam: (lastPage, allPages) => {
-      // যদি শেষ পেজে পাওয়া ডাটা সাইজ পূর্ণ হয়, তাহলে পরের পেজ থাকবে
+
       if (lastPage.length === pageSize) {
-        return allPages.length; // পরের পেজ নম্বর
+        return allPages.length;
       } else {
-        return undefined; // আর ডাটা নাই
+        return undefined;
       }
     },
   });

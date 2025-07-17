@@ -7,7 +7,7 @@ const AdminProfile = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
 
-  // ✅ Get meals added by current admin
+
   const { data: meals = [], isLoading } = useQuery({
     queryKey: ['adminMeals', user?.email],
     enabled: !!user?.email,

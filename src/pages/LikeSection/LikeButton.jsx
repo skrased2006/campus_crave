@@ -28,8 +28,8 @@ const LikeButton = ({ mealId, likes = 0, refetch }) => {
       if (res.data.success) {
         toast.success("Thanks for liking!");
         setLiked(true);
-        setLikedMeals((prev) => new Set(prev).add(mealId)); // update context state
-        if (refetch) refetch(); // optional UI update
+        setLikedMeals((prev) => new Set(prev).add(mealId));
+        if (refetch) refetch();
       }
     } catch (err) {
       console.error(err);

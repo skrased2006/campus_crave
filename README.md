@@ -1,8 +1,8 @@
 # 🏠 Campus Crave - Hostel Management System
 
-**Admin Username:** `admin@hostelease.com`  
-**Admin Password:** `admin123`  
-**Live Site URL:** [https://hostelease.web.app](https://hostelease.web.app) 
+**Admin Username:** `admin@gmail.com`  
+**Admin Password:** `123456`  
+**Live Site URL:** [https://campus-crave-4b521.web.app/](https://campus-crave-4b521.web.app/) 
 
 ---
 
@@ -21,7 +21,7 @@
 
 ---
 
-> 🚀 Built with React, Tailwind CSS, Firebase, Axios, MongoDB, Express, and React Hook Form.
+> 🚀 Built with React, Tailwind CSS, Firebase, Axios, MongoDB, Express, and React Hook Form and etc.
 
 ---
 

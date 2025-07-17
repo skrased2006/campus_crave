@@ -21,7 +21,7 @@ const UpcomingMealsPage = () => {
     },
   });
 
-  // Load previously liked meals
+
   useEffect(() => {
     if (user && upcomingMeals.length > 0) {
       const likedSet = new Set();

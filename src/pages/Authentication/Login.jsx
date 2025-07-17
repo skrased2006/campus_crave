@@ -12,7 +12,7 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state || "/";
-  console.log(from)
+
   const [error, setError] = useState("");
 
   const handleLogin = async (e) => {
@@ -43,7 +43,7 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-primary/10 to-blue-100 px-4">
       <div className="w-full max-w-6xl bg-white rounded-2xl shadow-2xl grid grid-cols-1 md:grid-cols-2 overflow-hidden">
 
-        {/* Left Side: Lottie Animation */}
+
         <div className="flex flex-col items-center justify-center bg-primary p-6 text-white">
           <Player
             autoplay
@@ -57,7 +57,6 @@ const Login = () => {
           </p>
         </div>
 
-        {/* Right Side: Login Form */}
         <div className="p-10">
           <h2 className="text-3xl font-bold text-center text-primary mb-6">
             Login to Your Account

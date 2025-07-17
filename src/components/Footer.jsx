@@ -46,7 +46,7 @@ const Footer = () => {
           <p className="text-sm mt-2">Email: support@campuscrave.com</p>
           <p className="text-sm">Phone: +880 1234-567890</p>
           <div className="flex gap-4 mt-3 text-xl">
-            <a href="#"><FaFacebook className="hover:text-blue-500" /></a>
+            <a href="https://www.facebook.com/"><FaFacebook className="hover:text-blue-500" /></a>
             <a href="#"><FaTwitter className="hover:text-sky-500" /></a>
             <a href="#"><FaInstagram className="hover:text-pink-500" /></a>
           </div>
