@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
 import LoadingSpinner from "../../components/LoadingSpinner";
+
 const PaymentHistory = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
@@ -18,48 +19,45 @@ const PaymentHistory = () => {
   if (isLoading) return <LoadingSpinner />;
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4 text-primary">Payment History</h2>
+    <div className="p-4">
+      <h2 className="text-2xl font-bold mb-4 text-primary text-center">Payment History</h2>
 
       {payments.length === 0 ? (
-        <p className="text-gray-500">No payments found.</p>
+        <p className="text-gray-500 text-center">No payments found.</p>
       ) : (
-        <div className="overflow-x-auto">
-          <table className="table table-zebra w-full">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Package</th>
-                <th>Badge</th>
-                <th>Amount</th>
-                <th>Transaction ID</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {payments.map((payment, idx) => (
-                <tr key={payment._id}>
-                  <td>{idx + 1}</td>
-                  <td>{payment.packageTitle}</td>
-                  <td>
-                    <span
-                      className={`badge ${payment.badge === "Platinum"
-                        ? "badge-purple-500"
-                        : payment.badge === "Gold"
-                          ? "badge-warning"
-                          : "badge-neutral"
-                        }`}
-                    >
-                      {payment.badge}
-                    </span>
-                  </td>
-                  <td>${payment.amount}</td>
-                  <td className="text-xs">{payment.transactionId}</td>
-                  <td>{new Date(payment.date).toLocaleString()}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {payments.map((payment, idx) => (
+            <div
+              key={payment._id}
+              className="bg-white shadow-md rounded-xl p-4 border border-gray-100"
+            >
+              <h3 className="text-lg font-semibold text-primary mb-1">{payment.packageTitle}</h3>
+              <p className="text-sm mb-1">
+                <span className="font-medium">Badge:</span>{" "}
+                <span
+                  className={`badge ${payment.badge === "Platinum"
+                      ? "bg-purple-500 text-white"
+                      : payment.badge === "Gold"
+                        ? "bg-yellow-500 text-white"
+                        : "bg-gray-400 text-white"
+                    }`}
+                >
+                  {payment.badge}
+                </span>
+              </p>
+              <p className="text-sm mb-1">
+                <span className="font-medium">Amount:</span> ${payment.amount}
+              </p>
+              <p className="text-sm mb-1 break-words">
+                <span className="font-medium">Transaction ID:</span>{" "}
+                {payment.transactionId}
+              </p>
+              <p className="text-sm text-gray-500">
+                <span className="font-medium">Date:</span>{" "}
+                {new Date(payment.date).toLocaleString()}
+              </p>
+            </div>
+          ))}
         </div>
       )}
     </div>

@@ -20,7 +20,6 @@ const MyReviews = () => {
     },
   });
 
-  // ✅ Delete handler with confirmation
   const handleDelete = async (id) => {
     const confirmed = await Swal.fire({
       title: 'Are you sure?',
@@ -39,13 +38,11 @@ const MyReviews = () => {
     }
   };
 
-  // ✅ Start editing
   const handleEdit = (review) => {
     setEditingReviewId(review._id);
     setEditedText(review.review);
   };
 
-  // ✅ Submit edit
   const handleEditSubmit = async (id) => {
     const res = await axiosSecure.patch(`/reviews/${id}`, { review: editedText });
     if (res.data.modifiedCount > 0) {
@@ -63,7 +60,8 @@ const MyReviews = () => {
     <div className="p-6 max-w-5xl mx-auto">
       <h2 className="text-3xl font-bold text-center text-primary mb-6">My Reviews</h2>
 
-      <div className="overflow-x-auto">
+      {/* ✅ Desktop Table View */}
+      <div className="hidden sm:block overflow-x-auto">
         <table className="table w-full">
           <thead>
             <tr>
@@ -91,43 +89,59 @@ const MyReviews = () => {
                 </td>
                 <td className="space-x-1">
                   {editingReviewId === review._id ? (
-                    <button
-                      onClick={() => handleEditSubmit(review._id)}
-                      className="btn btn-sm btn-success"
-                    >
-                      Save
-                    </button>
+                    <button onClick={() => handleEditSubmit(review._id)} className="btn btn-sm btn-success">Save</button>
                   ) : (
-                    <button
-                      onClick={() => handleEdit(review)}
-                      className="btn btn-sm btn-warning"
-                    >
-                      Edit
-                    </button>
+                    <button onClick={() => handleEdit(review)} className="btn btn-sm btn-warning">Edit</button>
                   )}
-
-                  <button
-                    onClick={() => handleDelete(review._id)}
-                    className="btn btn-sm btn-error"
-                  >
-                    Delete
-                  </button>
-
+                  <button onClick={() => handleDelete(review._id)} className="btn btn-sm btn-error">Delete</button>
                   <Link to={`/meal/${review.mealId}`}>
                     <button className="btn btn-sm btn-info">View</button>
                   </Link>
                 </td>
               </tr>
             ))}
-            {reviews.length === 0 && (
-              <tr>
-                <td colSpan="4" className="text-center text-gray-500 py-4">
-                  You haven't added any reviews yet.
-                </td>
-              </tr>
-            )}
           </tbody>
         </table>
+        {reviews.length === 0 && (
+          <p className="text-center text-gray-500 py-4">You haven't added any reviews yet.</p>
+        )}
+      </div>
+
+      {/* ✅ Mobile Card View */}
+      <div className="sm:hidden space-y-4">
+        {reviews.length === 0 ? (
+          <p className="text-center text-gray-500 py-4">You haven't added any reviews yet.</p>
+        ) : (
+          reviews.map((review) => (
+            <div key={review._id} className="border rounded-lg p-4 shadow bg-white space-y-2">
+              <p><span className="font-semibold">Meal Title:</span> {review.mealTitle}</p>
+              <p><span className="font-semibold">Likes:</span> {review.like}</p>
+              <p>
+                <span className="font-semibold">Review:</span>{' '}
+                {editingReviewId === review._id ? (
+                  <input
+                    value={editedText}
+                    onChange={(e) => setEditedText(e.target.value)}
+                    className="input input-bordered input-sm w-full"
+                  />
+                ) : (
+                  review.review
+                )}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {editingReviewId === review._id ? (
+                  <button onClick={() => handleEditSubmit(review._id)} className="btn btn-sm btn-success">Save</button>
+                ) : (
+                  <button onClick={() => handleEdit(review)} className="btn btn-sm btn-warning">Edit</button>
+                )}
+                <button onClick={() => handleDelete(review._id)} className="btn btn-sm btn-error">Delete</button>
+                <Link to={`/meal/${review.mealId}`}>
+                  <button className="btn btn-sm btn-info">View</button>
+                </Link>
+              </div>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );
