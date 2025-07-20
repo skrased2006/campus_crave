@@ -12,7 +12,7 @@ const Login = () => {
   const { signIn, signInwithGoogle } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const axiosSecure = useAxiosSecure()
+  const axiosInstance = useAxiosSecure()
   const from = location.state || "/";
 
   const [error, setError] = useState("");
@@ -46,15 +46,15 @@ const Login = () => {
         last_log_in: new Date().toISOString(),
       };
 
-      // 🔍 Check if user already exists
-      const { data: existingUser } = await axiosSecure.get(`/users/${user.email}`);
+
+      const { data: existingUser } = await axiosInstance.get(`/users/${user.email}`);
 
       if (!existingUser) {
-        // ❗User does not exist, so save
-        await axiosSecure.post("/users", userInfo);
+
+        await axiosInstance.post("/users", userInfo);
       } else {
-        // ✅ Update last login if needed (optional)
-        await axiosSecure.patch(`/users/${user.email}`, {
+
+        await axiosInstance.patch(`/users/${user.email}`, {
           last_log_in: new Date().toISOString()
         });
       }
