@@ -61,8 +61,8 @@ const AllReviews = () => {
             {reviews.map((review) => (
               <tr key={review._id}>
                 <td>{review.mealTitle || "Untitled Meal"}</td>
-                <td>{review.likes || 0}</td>
-                <td>{review.reviews_count || "No review text"}</td>
+                <td>{review.like || 0}</td>
+                <td>{review.reviews_count}</td>
                 <td className="space-x-2">
                   <button
                     onClick={() => handleDelete(review._id)}

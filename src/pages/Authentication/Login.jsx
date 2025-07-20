@@ -6,11 +6,13 @@ import useAuth from "../../hooks/useAuth";
 
 import foodAnim from "../../assets/animations/Login Leady.json";
 import toast from "react-hot-toast";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const Login = () => {
   const { signIn, signInwithGoogle } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const axiosSecure = useAxiosSecure()
   const from = location.state || "/";
 
   const [error, setError] = useState("");
@@ -32,12 +34,41 @@ const Login = () => {
 
   const handleGoogleLogin = async () => {
     try {
-      await signInwithGoogle();
+      const result = await signInwithGoogle();
+      const user = result.user;
+
+      const userInfo = {
+        name: user.displayName,
+        email: user.email,
+        profilePic: user.photoURL,
+        role: 'user',
+        created_at: new Date().toISOString(),
+        last_log_in: new Date().toISOString(),
+      };
+
+      // 🔍 Check if user already exists
+      const { data: existingUser } = await axiosSecure.get(`/users/${user.email}`);
+
+      if (!existingUser) {
+        // ❗User does not exist, so save
+        await axiosSecure.post("/users", userInfo);
+      } else {
+        // ✅ Update last login if needed (optional)
+        await axiosSecure.patch(`/users/${user.email}`, {
+          last_log_in: new Date().toISOString()
+        });
+      }
+
+      toast.success("🎉 Google login successful!");
       navigate(from);
+
     } catch (err) {
       console.error(err.message);
+      toast.error("❌ Google login failed");
     }
   };
+
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-primary/10 to-blue-100 px-4">

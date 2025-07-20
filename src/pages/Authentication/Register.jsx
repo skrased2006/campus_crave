@@ -14,7 +14,7 @@ import toast from "react-hot-toast";
 
 
 const Register = () => {
-  const { createUser, userUpadateProfile, googleSignIn } = useAuth();
+  const { createUser, userUpadateProfile, signInwithGoogle } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const axiosInstance = useAxiosSecure();
@@ -111,16 +111,42 @@ const Register = () => {
 
     }
   };
-
-  const handleGoogleSignup = async () => {
-    setError("");
+  const handleGoogleLogin = async () => {
     try {
-      await googleSignIn();
-      navigate("/");
+      const result = await signInwithGoogle();
+      const user = result.user;
+
+      const userInfo = {
+        name: user.displayName,
+        email: user.email,
+        profilePic: user.photoURL,
+        role: 'user',
+        created_at: new Date().toISOString(),
+        last_log_in: new Date().toISOString(),
+      };
+
+
+      const { data: existingUser } = await axiosInstance.get(`/users/${user.email}`);
+
+      if (!existingUser) {
+
+        await axiosInstance.post("/users", userInfo);
+      } else {
+
+        await axiosInstance.patch(`/users/${user.email}`, {
+          last_log_in: new Date().toISOString()
+        });
+      }
+
+      toast.success("🎉 Google login successful!");
+      navigate(from);
+
     } catch (err) {
-      setError(err.message);
+      console.error(err.message);
+      toast.error("❌ Google login failed");
     }
   };
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
@@ -236,7 +262,7 @@ const Register = () => {
           <div className="divider">OR</div>
 
           <button
-            onClick={handleGoogleSignup}
+            onClick={handleGoogleLogin}
             className="btn btn-outline w-full flex items-center justify-center gap-2"
           >
             <FcGoogle size={22} /> Sign up with Google
