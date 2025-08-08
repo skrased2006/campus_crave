@@ -1,27 +1,50 @@
-# 🏠 Campus Crave - Hostel Management System
+# 📌 Pinned Project: HostelEase - Hostel Management System 🏠
 
-**Admin Username:** `admin@gmail.com`  
-**Admin Password:** `123456`  
-**Live Site URL:** [https://campus-crave-4b521.web.app/](https://campus-crave-4b521.web.app/) 
+A complete hostel management system built using MERN Stack with user and admin dashboards, meal reviews, upcoming meals, and premium packages.
 
----
+🔗 **Live Site:** [https://hostelease-client.web.app](https://hostelease-client.web.app)
 
-## 🌟 Website Features
-
-- 🔐 **Authentication System:** Register and login using email/password, with Firebase authentication integration.
-- 🏡 **Dynamic Home Page:** Includes a banner, search bar, featured meals, membership options, and footer.
-- 🍽️ **Meal Management:** View meals by category (Breakfast, Lunch, Dinner), and like/review meals.
-- 📆 **Upcoming Meals:** Admin can add and publish upcoming meals. Users can view meals sorted by popularity.
-- 💬 **Meal Reviews:** Users can write reviews and like meals. Admin can view and delete reviews.
-- 🛡️ **Role-Based Dashboards:** Separate dashboards for User, Admin, and Rider with specific permissions.
-- 🧑‍💼 **Premium Membership:** Users can upgrade to premium for exclusive benefits (like liking meals).
-- 📦 **Parcel Request System:** Riders can see meal/parcel delivery requests and update their statuses.
-- 📊 **Data Management:** Admins can add, update, or delete meals, upcoming meals, and manage reviews.
-- 📱 **Responsive UI:** Fully mobile-friendly and responsive using Tailwind CSS.
+🔗 **Client Repo:** [HostelEase Client](https://github.com/rasedul-islam/hostelease-client)  
+🔗 **Server Repo:** [HostelEase Server](https://github.com/rasedul-islam/hostelease-server)
 
 ---
 
-> 🚀 Built with React, Tailwind CSS, Firebase, Axios, MongoDB, Express, and React Hook Form and etc.
+## 🛠️ Technologies Used
+
+- React.js
+- Tailwind CSS
+- Firebase Auth
+- React Router DOM
+- Node.js + Express
+- MongoDB + Mongoose
+- JWT for authentication
+- Axios & SweetAlert2
 
 ---
 
+## ⚙️ Features
+
+- 👨‍🎓 Student registration & login (Firebase)
+- 🥘 Meal management: Add, review, and filter meals
+- 📅 Upcoming meals with admin scheduling
+- 💰 Premium package upgrades with Stripe integration
+- 📊 Admin dashboard with data analytics
+- 🔒 Protected routes and JWT-based API calls
+
+---
+
+## 📸 Screenshot
+
+<img src='https://i.ibb.co.com/FLwGT1Cz/Whats-App-Image-2025-08-04-at-22-57-13-5fc542bf.jpg' />
+
+---
+
+## 🔧 How to Run Locally
+
+### 🔹 Clone & Install
+
+```bash
+
+git clone https://github.com/rasedul-islam/hostelease-client.git
+cd hostelease-client
+npm install
