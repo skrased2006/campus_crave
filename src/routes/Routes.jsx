@@ -26,6 +26,7 @@ import ServeMeals from "../pages/DashBoard/ServeMeals";
 import Forbidden from "../pages/Forbidden/Forbidden";
 import AdminRoute from "./AdminRoute";
 import DashBoardHome from "../pages/DashBoardHome/DashBoardHome";
+import AboutCampusCrave from "../components/AboutCampusCrave";
 
 
 
@@ -48,6 +49,11 @@ export const router = createBrowserRouter([
 
         path: 'allmeal',
         element: <MealsPage></MealsPage>
+
+      },
+      {
+        path: 'about',
+        element :<AboutCampusCrave/>
 
       },
       {

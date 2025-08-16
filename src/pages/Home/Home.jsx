@@ -5,6 +5,10 @@ import MembershipSection from './MembershipSection';
 import ExtraSection from './ExtraSection';
 import MealTabs from '../MealSection/MealTabs';
 import Testimonial from './Testomonial';
+import RecentMeals from './RecentMeals/RecentMeals';
+import Newsletter from './Newsletter';
+import HealthyEatingHabits from './HealthyEating';
+
 
 const Home = () => {
   return (
@@ -26,6 +30,7 @@ const Home = () => {
       >
         <MealTabs />
       </motion.div>
+      <RecentMeals />
 
       <motion.div
         initial={{ opacity: 0, x: 50 }}
@@ -44,7 +49,7 @@ const Home = () => {
         <Testimonial></Testimonial>
       </motion.div>
 
-
+ <HealthyEatingHabits/>
 
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
@@ -54,7 +59,9 @@ const Home = () => {
       >
         <ExtraSection />
       </motion.div>
-
+      <Newsletter/>
+  
+    
     </div>
   );
 };
