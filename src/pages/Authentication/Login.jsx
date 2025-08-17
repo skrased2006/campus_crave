@@ -46,6 +46,9 @@ const Login = () => {
         last_log_in: new Date().toISOString(),
       };
 
+      console.log(user);
+    
+
 
       const { data: existingUser } = await axiosInstance.get(`/users/${user.email}`);
 
