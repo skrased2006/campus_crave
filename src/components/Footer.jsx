@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -35,7 +35,7 @@ const Footer = () => {
           <h3 className="footer-title">Useful</h3>
           <ul className="mt-2 space-y-1">
             <li><Link to="/dashboard/my-profile" className="link link-hover">Dashboard</Link></li>
-            <li><Link to="/join" className="link link-hover">Join Us</Link></li>
+            <li><Link to="/login" className="link link-hover">Join Us</Link></li>
             <li><Link to="/checkout/silver" className="link link-hover">Buy Membership</Link></li>
           </ul>
         </div>
@@ -44,11 +44,18 @@ const Footer = () => {
         <div>
           <h3 className="footer-title">Contact Us</h3>
           <p className="text-sm mt-2">Email: support@campuscrave.com</p>
-          <p className="text-sm">Phone: +880 1234-567890</p>
+          <p className="text-sm">Phone: +880 979962617</p>
           <div className="flex gap-4 mt-3 text-xl">
-            <a href="https://www.facebook.com/"><FaFacebook className="hover:text-blue-500" /></a>
-            <a href="#"><FaTwitter className="hover:text-sky-500" /></a>
-            <a href="#"><FaInstagram className="hover:text-pink-500" /></a>
+          <a
+  href="https://www.facebook.com/profile.php?id=61557281361139"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  <FaFacebook className="hover:text-blue-500" />
+</a>
+
+            <a href="https://www.linkedin.com/in/shaikh-rasedul-islam-284512377/"><FaLinkedin className="hover:text-sky-500" /></a>
+            <a href="https://www.instagram.com/sksayem2006/"><FaInstagram className="hover:text-pink-500" /></a>
           </div>
         </div>
       </div>
