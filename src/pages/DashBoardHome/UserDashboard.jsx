@@ -6,8 +6,18 @@ import {
   FaUserCircle,
 } from "react-icons/fa";
 import { useQuery } from "@tanstack/react-query";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
+
+const COLORS = ["#60A5FA", "#FBBF24", "#34D399", "#F87171"];
 
 const UserDashboard = () => {
   const axiosSecure = useAxiosSecure();
@@ -16,7 +26,9 @@ const UserDashboard = () => {
   const { data: stats = {}, isLoading } = useQuery({
     queryKey: ["userDashboardStats", user?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/user/dashboard-stats?email=${user?.email}`);
+      const res = await axiosSecure.get(
+        `/user/dashboard-stats?email=${user?.email}`
+      );
       return res.data;
     },
     enabled: !!user?.email,
@@ -30,16 +42,28 @@ const UserDashboard = () => {
     );
   }
 
+  // Chart data
+  const chartData = [
+    { name: "Requested Meals", value: stats?.requestedMeals || 0 },
+    { name: "My Reviews", value: stats?.reviews || 0 },
+    { name: "Payments", value: stats?.payments || 0 },
+    { name: "Badge", value: stats?.badge ? 1 : 0 }, // Badge count হিসাবে 1 ধরলাম
+  ];
+
   return (
     <div className="p-6">
-      <h2 className="text-3xl font-bold mb-6 text-primary">Welcome, {user?.displayName}!</h2>
+      <h2 className="text-3xl font-bold mb-6 text-primary">
+        Welcome, {user?.displayName}!
+      </h2>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
         <div className="card bg-base-100 shadow border p-6 flex flex-col items-center text-center">
           <FaUtensils className="text-4xl text-info" />
           <h3 className="font-bold mt-2">Requested Meals</h3>
-          <p className="text-3xl font-bold text-primary">{stats?.requestedMeals || 0}</p>
+          <p className="text-3xl font-bold text-primary">
+            {stats?.requestedMeals || 0}
+          </p>
         </div>
 
         <div className="card bg-base-100 shadow border p-6 flex flex-col items-center text-center">
@@ -57,8 +81,39 @@ const UserDashboard = () => {
         <div className="card bg-base-100 shadow border p-6 flex flex-col items-center text-center">
           <FaUserCircle className="text-4xl text-neutral" />
           <h3 className="font-bold mt-2">Badge</h3>
-          <p className="text-xl font-bold text-primary">{stats?.badge || "Bronze"}</p>
+          <p className="text-xl font-bold text-primary">
+            {stats?.badge || "Bronze"}
+          </p>
         </div>
+      </div>
+
+      {/* Pie Chart */}
+      <div className="card bg-base-100 shadow-md p-6">
+        <h3 className="text-xl font-bold mb-4">Your Activity Summary</h3>
+        <ResponsiveContainer width="100%" height={300}>
+          <PieChart>
+            <Pie
+              data={chartData}
+              dataKey="value"
+              nameKey="name"
+              cx="50%"
+              cy="50%"
+              outerRadius={100}
+              label={({ name, percent }) =>
+                `${name} (${(percent * 100).toFixed(0)}%)`
+              }
+            >
+              {chartData.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={COLORS[index % COLORS.length]}
+                />
+              ))}
+            </Pie>
+            <Tooltip />
+            <Legend verticalAlign="bottom" height={36} />
+          </PieChart>
+        </ResponsiveContainer>
       </div>
     </div>
   );
