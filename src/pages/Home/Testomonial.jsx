@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { FaChevronLeft, FaChevronRight, FaPause, FaPlay } from 'react-icons/fa';
 
 const testimonials = [
@@ -38,43 +38,7 @@ const testimonials = [
     role: 'Student',
     quote: 'The food review and premium features are amazing. I feel more connected with my hostel now.',
   },
-  {
-    id: 6,
-    imageUrl: 'https://randomuser.me/api/portraits/men/6.jpg',
-    name: 'Fahim Reza',
-    role: 'Campus Craver',
-    quote: 'Easy to use, modern, and fast. I never miss any meal update thanks to this platform.',
-  },
-  {
-    id: 7,
-    imageUrl: 'https://randomuser.me/api/portraits/women/7.jpg',
-    name: 'Mehjabin Akter',
-    role: 'Freelancer',
-    quote: 'Being a freelancer, meal flexibility is important. CampusCrave helps me adjust my plans easily!',
-  },
-  {
-    id: 8,
-    imageUrl: 'https://randomuser.me/api/portraits/men/8.jpg',
-    name: 'Tanvir Hossain',
-    role: 'Student',
-    quote: 'The UI is clean and responsive. It works great on mobile too!',
-  },
-  {
-    id: 9,
-    imageUrl: 'https://randomuser.me/api/portraits/women/9.jpg',
-    name: 'Priya Sharma',
-    role: 'Software Engineer',
-    quote: 'Very optimized and smooth experience. I can manage everything with just a few clicks!',
-  },
-  {
-    id: 10,
-    imageUrl: 'https://randomuser.me/api/portraits/men/10.jpg',
-    name: 'Kabir Rahman',
-    role: 'Content Creator',
-    quote: 'From giving reviews to managing my profile—everything feels intuitive. Loved it!',
-  },
 ];
-
 
 const Testimonial = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -85,71 +49,71 @@ const Testimonial = () => {
     setActiveIndex((prev) => (prev + 1) % testimonials.length);
   }, []);
 
-  const changeSlide = useCallback((index) => {
-    const safeIndex = (index + testimonials.length) % testimonials.length;
-    setActiveIndex(safeIndex);
-    if (intervalRef.current) clearInterval(intervalRef.current);
-    if (!isPaused) {
-      intervalRef.current = setInterval(nextSlide, 5000);
-    }
-  }, [isPaused, nextSlide]);
+  const changeSlide = useCallback(
+    (index) => {
+      const safeIndex = (index + testimonials.length) % testimonials.length;
+      setActiveIndex(safeIndex);
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      if (!isPaused) intervalRef.current = setInterval(nextSlide, 5000);
+    },
+    [isPaused, nextSlide]
+  );
 
   useEffect(() => {
-    if (!isPaused) {
-      intervalRef.current = setInterval(nextSlide, 5000);
-    }
+    if (!isPaused) intervalRef.current = setInterval(nextSlide, 5000);
     return () => clearInterval(intervalRef.current);
   }, [isPaused, nextSlide]);
 
+  // Get 3 testimonials starting from activeIndex
+  const visibleTestimonials = [
+    testimonials[activeIndex],
+    testimonials[(activeIndex + 1) % testimonials.length],
+    testimonials[(activeIndex + 2) % testimonials.length],
+  ];
+
   return (
-    <div className="w-full max-w-5xl mx-auto px-4 py-14">
-      <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-white mb-8">
+    <div className="w-full max-w-6xl mx-auto px-4 py-14">
+      <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-white mb-3">
         What Our Customers Say
       </h2>
+      <p className="text-center text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-10">
+        Thousands of students, hostel admins, and food lovers trust us every day. 
+        Here’s what they think about our meals and services.
+      </p>
 
-      <div className="relative h-[400px] md:h-[360px] flex items-center justify-center overflow-hidden">
-        <motion.div className="absolute w-full h-full flex justify-center items-center">
-          {testimonials.map((item, index) => {
-            const offset = index - activeIndex;
-            const isActive = offset === 0;
-            const visible = Math.abs(offset) <= 1;
-
-            const animate = {
-              x: `${offset * 100}%`,
-              scale: isActive ? 1 : 0.85,
-              opacity: visible ? 1 : 0,
-              transition: { type: 'spring', stiffness: 250, damping: 25 },
-            };
-
-            return (
+      <div className="relative flex items-center justify-center overflow-hidden">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+          <AnimatePresence initial={false}>
+            {visibleTestimonials.map((item) => (
               <motion.div
                 key={item.id}
-                className="absolute w-full md:w-2/3 lg:w-1/2 h-[340px] rounded-2xl p-6 shadow-2xl bg-white dark:bg-neutral-900 backdrop-blur-md border border-gray-200 dark:border-white/10"
-                style={{ transformStyle: 'preserve-3d' }}
-                animate={animate}
-                initial={false}
+                initial={{ opacity: 0, x: 100 }}  // 👉 ডান দিক থেকে আসবে
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -100 }}
+                transition={{ duration: 0.6 }}
+                className="rounded-2xl p-6 shadow-2xl bg-white dark:bg-neutral-900 border border-gray-200 dark:border-white/10 flex flex-col items-center text-center"
               >
-                <div className="flex flex-col items-center justify-center h-full text-center space-y-4">
-                  <img
-                    src={item.imageUrl}
-                    alt={item.name}
-                    className="w-20 h-20 rounded-full object-cover border-4 border-pink-400 shadow-md"
-                  />
-                  <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
-                    {item.name}
-                  </h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">{item.role}</p>
-                  <p className="text-gray-700 dark:text-gray-300 italic max-w-xs mx-auto">
-                    "{item.quote}"
-                  </p>
-                </div>
+                <img
+                  src={item.imageUrl}
+                  alt={item.name}
+                  className="w-20 h-20 rounded-full object-cover border-4 border-pink-400 shadow-md mb-4"
+                />
+                <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
+                  {item.name}
+                </h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+                  {item.role}
+                </p>
+                <p className="text-gray-700 dark:text-gray-300 italic">
+                  "{item.quote}"
+                </p>
               </motion.div>
-            );
-          })}
-        </motion.div>
+            ))}
+          </AnimatePresence>
+        </div>
       </div>
 
-      {/* Navigation Icons */}
+      {/* Navigation */}
       <div className="flex justify-center items-center gap-4 mt-8">
         <button
           onClick={() => changeSlide(activeIndex - 1)}
@@ -181,8 +145,9 @@ const Testimonial = () => {
           <button
             key={i}
             onClick={() => changeSlide(i)}
-            className={`w-3 h-3 rounded-full ${activeIndex === i ? 'bg-pink-500' : 'bg-gray-300 dark:bg-gray-600'
-              }`}
+            className={`w-3 h-3 rounded-full ${
+              activeIndex === i ? 'bg-pink-500' : 'bg-gray-300 dark:bg-gray-600'
+            }`}
           />
         ))}
       </div>

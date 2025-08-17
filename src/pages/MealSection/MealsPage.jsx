@@ -19,7 +19,7 @@ const MealsPage = () => {
     maxPrice: ''
   });
 
-  const limit = 6;
+  const limit = 8;
 
   const fetchMeals = async () => {
 
@@ -63,7 +63,7 @@ const MealsPage = () => {
   };
 
   return (
-    <div className="p-4 max-w-7xl mx-auto">
+    <div className="p-4 max-w-11/12 mx-auto">
       {/* 🔍 Search & Filters */}
       <div className="flex gap-4 flex-wrap mb-6 justify-center">
         <input
@@ -106,7 +106,7 @@ const MealsPage = () => {
         loader={<p className="text-center text-lg text-gray-500">🍽️ Loading more meals...</p>}
         endMessage={<p className="text-center text-gray-400 mt-6">No more meals to load.</p>}
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
           {meals.map((meal, index) => (
             <motion.div
               key={meal._id}

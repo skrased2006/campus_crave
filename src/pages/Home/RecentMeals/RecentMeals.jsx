@@ -1,55 +1,69 @@
-// RecentMeals.jsx
-import React, { useEffect, useState } from 'react';
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { useNavigate } from "react-router";
+import { motion } from "framer-motion";
 
 const RecentMeals = () => {
-  const [meals, setMeals] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    fetch('http://localhost:5000/recent-meals') // backend API
-      .then(res => res.json())
-      .then(data => {
-        setMeals(data);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error("Failed to fetch recent meals:", err);
-        setLoading(false);
-      });
-  }, []);
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["recent-meals"],
+    queryFn: async () => {
+      const res = await axios.get(
+        "https://campas-crave-server.vercel.app/meals?page=0&size=8"
+      );
+      return res.data;
+    },
+  });
 
-  if (loading) {
-    return <p className="text-center mt-10 text-gray-600">Loading...</p>;
-  }
+  const allMeals = data || [];
 
   return (
-    <section className="py-16 px-6 md:px-12 lg:px-24 bg-gray-50">
-      <div className="max-w-7xl mx-auto text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900">Recent Additions</h2>
-        <p className="text-gray-600 mt-2">Check out our latest meals!</p>
-      </div>
+    <section className="py-12 px-4 max-w-11/12 mx-auto">
+      <h2 className="text-3xl font-bold text-primary mb-8 text-center">
+        🆕 Recent Meals
+      </h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-        {meals.map(meal => (
-          <div
-            key={meal._id}
-            className="bg-white rounded-xl shadow-md overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-lg"
+      {/* Loading / Error */}
+      {isLoading && <p className="text-center py-10">Loading meals...</p>}
+      {isError && (
+        <p className="text-center text-red-500">Error loading recent meals.</p>
+      )}
+
+      {/* Meal Cards */}
+      <motion.div
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+      >
+        {allMeals.map(({ _id, title, image, rating, price }, index) => (
+          <motion.div
+            key={_id}
+            className="bg-white rounded-xl shadow hover:shadow-lg transition cursor-pointer overflow-hidden"
+            whileHover={{ scale: 1.03 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.05 }}
           >
-            <img
-              src={meal.image}
-              alt={meal.title}
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-4 text-center">
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">{meal.title}</h3>
-              <p className="text-gray-600 text-sm mb-4">{meal.description}</p>
-              <button className="px-4 py-2 bg-purple-500 text-white rounded-full hover:bg-purple-600 transition">
-                See More
+            <img src={image} alt={title} className="w-full h-48 object-cover" />
+            <div className="p-4">
+              <h3 className="text-lg font-bold mb-1">{title}</h3>
+              <p className="text-yellow-500 text-sm mb-1">
+                ⭐ {rating?.toFixed(1) || 0}
+              </p>
+              <p className="font-semibold text-gray-800 mb-2">
+                ${price?.toFixed(2)}
+              </p>
+              <button
+                onClick={() => navigate(`/meal/${_id}`)}
+                className="btn btn-primary btn-sm w-full"
+              >
+                Details
               </button>
             </div>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 };

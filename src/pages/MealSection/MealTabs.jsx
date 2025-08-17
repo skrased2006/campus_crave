@@ -5,7 +5,7 @@ import { useNavigate } from "react-router";
 import { motion } from "framer-motion";
 
 const categories = ["Breakfast", "Lunch", "Dinner", "All Meals"];
-const pageSize = 6;
+const pageSize = 8;
 
 const MealTabs = () => {
   const [activeTab, setActiveTab] = useState("Breakfast");
@@ -34,7 +34,7 @@ const MealTabs = () => {
   const allMeals = data?.pages.flat() || [];
 
   return (
-    <section className="py-12 px-4 max-w-9/12 mx-auto">
+    <section className="py-12 px-4 max-w-11/12 mx-auto">
       <h2 className="text-3xl font-bold text-primary mb-8 text-center">
         Meals by Category
       </h2>
@@ -63,7 +63,7 @@ const MealTabs = () => {
 
       {/* Meal Cards */}
       <motion.div
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8"
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         key={activeTab}

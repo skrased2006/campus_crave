@@ -21,7 +21,7 @@ const infos = [
 
 const ExtraSection = () => {
   return (
-    <section className="py-20 px-4 bg-gradient-to-b from-white to-gray-50">
+    <section className="py-20 px-4 ">
       <div className="max-w-7xl mx-auto text-center">
         <motion.h2
           className="text-4xl font-extrabold text-primary mb-4"

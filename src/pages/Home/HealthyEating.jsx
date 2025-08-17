@@ -5,76 +5,82 @@ const HealthyEatingHabits = () => {
   const blogs = [
     {
       id: 1,
-      title: "🥦 Eat More Greens",
-      image: "https://i.ibb.co/8nx5LPvr/zoshua-colah-lu-KV6avowg0-unsplash.jpg",
+      title: "🥦 Boost Your Meals with Greens",
+      image: "https://i.ibb.co.com/DXtMbtw/cliffer-rebelo-Ud-Ls-LK-KFLw-unsplash.jpg",
       description:
-        "Consuming a wide variety of fresh vegetables daily enhances your health and vitality. Leafy greens such as spinach, kale, and broccoli are packed with essential vitamins, minerals, and antioxidants that strengthen immunity, improve digestion, and boost energy levels. Aim to make your meals colorful for maximum nutritional benefits.",
+        "Incorporate fresh vegetables like spinach, kale, and broccoli into your daily meals. They are rich in vitamins, minerals, and antioxidants that support your immunity, digestion, and overall energy. Make your plate colorful for both taste and nutrition.",
     },
-    {
-      id: 2,
-      title: "💧 Stay Hydrated",
-      image: "https://i.ibb.co/xK50srMX/gustavo-scafeli-ai-Jy-Qjy-I4c-unsplash.jpg",
-      description:
-        "Water is fundamental for optimal body functions including nutrient transport, temperature regulation, and waste elimination. Adequate hydration enhances cognitive performance, maintains radiant skin, and supports weight management. Drink at least 8 glasses daily and include water-rich fruits and vegetables in your diet.",
-    },
+ {
+  id: 2,
+  title: "💧 Juicy Hydration for Better Digestion",
+  image: "https://i.ibb.co.com/4nV93F0v/createasea-JBe-C3-YVkm-Fw-unsplash.jpg", 
+  description:
+    "Fresh fruit juices and water-rich foods are perfect companions to your meals. They aid digestion, boost energy, and keep your skin glowing. Include juicy fruits like watermelon, oranges, and berries to enhance flavor and hydration naturally.",
+},
+
+
     {
       id: 3,
-      title: "🍊 Balance Your Diet",
-      image: "https://i.ibb.co/4ZBdMmxF/toan-le-B0-AQU802-AN0-unsplash.jpg",
+      title: "🍊 Balance Meals for Maximum Health",
+      image: "https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=800&q=80",
       description:
-        "Achieving a balanced diet is key to long-term wellness. Include proteins, healthy fats, complex carbohydrates, and plenty of fruits and vegetables in your meals. Reduce reliance on processed foods and sugary snacks. Consistent dietary improvements contribute to better energy, mood, and overall health.",
+        "A balanced meal includes lean proteins, whole grains, healthy fats, and plenty of fruits and vegetables. Avoid processed foods and sugary snacks. Consistently choosing balanced meals improves energy, focus, and overall wellbeing.",
     },
   ];
 
   const cardVariants = {
-    hidden: { opacity: 0, x: 100 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.8 } },
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
   };
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-20 ">
       {/* Header */}
-      <div className="max-w-5xl mx-auto px-6 text-center mb-12">
-        <h2 className="text-4xl font-bold text-gray-800 mb-4">
-          Healthy Living Insights
+      <div className="max-w-5xl mx-auto px-6 text-center mb-16">
+        <h2 className="text-4xl font-bold text-blue-700 mb-4">
+          Healthy Eating, Happy Life
         </h2>
         <h3 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">
-          Expert Tips & Practical Guides for a Healthier Lifestyle
+          Simple Tips to Make Your Meals Nutritious & Delicious
         </h3>
-        <p className="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto">
-          Discover insightful articles and tips curated to help you maintain a balanced diet, stay hydrated, and lead a healthier, more energetic life. Implementing simple daily habits can bring long-term wellness benefits.
+        <p className="text-gray-700 text-lg md:text-xl max-w-3xl mx-auto">
+          Explore our easy-to-follow meal tips and articles curated for food lovers. Learn how to prepare balanced meals, incorporate fresh ingredients, and enjoy every bite while boosting your health.
         </p>
       </div>
 
       {/* Blog Cards */}
-      <div className="max-w-7xl mx-auto px-6 flex flex-col gap-16">
+      <div className="max-w-7xl mx-auto px-6 flex flex-col gap-20">
         {blogs.map((blog, index) => (
           <motion.div
             key={blog.id}
-            className={`flex flex-col md:flex-row ${
+            className={`flex flex-col md:flex-row items-center gap-6 ${
               index % 2 !== 0 ? "md:flex-row-reverse" : ""
-            } items-center gap-6`}
+            }`}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
             variants={cardVariants}
           >
             {/* Image */}
-            <img
-              src={blog.image}
-              alt={blog.title}
-              className="w-full md:w-1/2 h-[28rem] object-cover rounded-2xl shadow-lg"
-            />
+            <div className="w-full md:w-1/2 overflow-hidden rounded-2xl shadow-lg hover:scale-105 transition-transform duration-500">
+              <img
+                src={blog.image}
+                alt={blog.title}
+                className="w-full h-[28rem] object-cover rounded-2xl"
+              />
+            </div>
 
             {/* Middle border */}
-            <div className="hidden md:block w-px bg-gray-300 h-[28rem]"></div>
+            <div className="hidden md:block w-px bg-blue-300 h-[28rem]"></div>
 
             {/* Details */}
-            <div className="md:w-1/2 flex flex-col justify-center">
+            <div className="md:w-1/2 flex flex-col justify-center px-2 md:px-6">
               <h3 className="text-3xl font-bold text-gray-800 mb-4">
                 {blog.title}
               </h3>
-              <p className="text-gray-700 text-lg">{blog.description}</p>
+              <p className="text-gray-700 text-lg leading-relaxed">
+                {blog.description}
+              </p>
             </div>
           </motion.div>
         ))}
