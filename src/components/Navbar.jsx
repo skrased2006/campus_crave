@@ -99,9 +99,15 @@ const Navbar = () => {
           )}
 
           {/* Join Us button for guests */}
-          {!user && (
-            <Link to="/login" className="btn btn-primary btn-sm px-4 py-1 text-sm whitespace-nowrap">Join Us</Link>
-          )}
+       {/* Desktop only Join Us */}
+{!user && (
+  <Link
+    to="/login"
+    className="hidden lg:inline-block btn btn-primary btn-sm px-4 py-1 text-sm whitespace-nowrap"
+  >
+    Join Us
+  </Link>
+)}
 
           {/* User Avatar & Dropdown */}
           {user && (

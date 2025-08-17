@@ -9,61 +9,87 @@ import RecentMeals from './RecentMeals/RecentMeals';
 import Newsletter from './Newsletter';
 import HealthyEatingHabits from './HealthyEating';
 
-
 const Home = () => {
+  // Variants for section animation
+  const sectionVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+  };
+
   return (
     <div className="space-y-10">
-
       <motion.div
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
+        initial="hidden"
+        animate="visible"
+        variants={sectionVariants}
       >
         <BannerSection />
       </motion.div>
 
       <motion.div
-        initial={{ opacity: 0, x: -50 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
+        initial="hidden"
+        whileInView="visible"
+        variants={sectionVariants}
+        viewport={{ once: true, amount: 0.3 }}
       >
         <MealTabs />
       </motion.div>
-      <RecentMeals />
 
       <motion.div
-        initial={{ opacity: 0, x: 50 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
+        initial="hidden"
+        whileInView="visible"
+        variants={sectionVariants}
+        viewport={{ once: true, amount: 0.3 }}
+      >
+        <RecentMeals />
+      </motion.div>
+
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        variants={{ hidden: { opacity: 0, x: 50 }, visible: { opacity: 1, x: 0, transition: { duration: 0.8 } } }}
+        viewport={{ once: true, amount: 0.3 }}
       >
         <MembershipSection />
       </motion.div>
+
       <motion.div
-        initial={{ opacity: 0, x: 50 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
+        initial="hidden"
+        whileInView="visible"
+        variants={{ hidden: { opacity: 0, x: -50 }, visible: { opacity: 1, x: 0, transition: { duration: 0.8 } } }}
+        viewport={{ once: true, amount: 0.3 }}
       >
-        <Testimonial></Testimonial>
+        <Testimonial />
       </motion.div>
 
- <HealthyEatingHabits/>
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        variants={sectionVariants}
+        viewport={{ once: true, amount: 0.3 }}
+      >
+        <HealthyEatingHabits />
+      </motion.div>
 
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
+        whileInView={{ opacity: 1, scale: 1, transition: { duration: 0.8 } }}
+        viewport={{ once: true, amount: 0.3 }}
       >
         <ExtraSection />
       </motion.div>
-      <Newsletter/>
-  
-    
+
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        variants={sectionVariants}
+        viewport={{ once: true, amount: 0.3 }}
+      >
+        <Newsletter />
+      </motion.div>
     </div>
   );
 };
 
 export default Home;
+
