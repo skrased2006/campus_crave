@@ -1,5 +1,5 @@
 import React from "react";
-import { toast, Toaster } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 const Newsletter = () => {
   const handleSubscribe = (e) => {
@@ -9,8 +9,7 @@ const Newsletter = () => {
 
   return (
     <div className="bg-white py-16 px-6 lg:px-20 text-center">
-      {/* Toast container */}
-      <Toaster position="top-center" reverseOrder={false} />
+  
 
       <h2 className="text-3xl font-bold text-gray-800 mb-4">
         🍴 Subscribe to Our Newsletter
